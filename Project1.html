@@ -1,40 +1,23 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<style>
-
-svg {
-  font: 10px sans-serif;
-  padding: 10px;
-}
-
-.axis,
-.frame {
-  shape-rendering: crispEdges;
-}
-
-.axis line {
-  stroke: #ddd;
-}
-
-.axis path {
-  display: none;
-}
-
-.frame {
-  fill: none;
-  stroke: #aaa;
-}
-
-circle {
-  fill-opacity: .7;
-}
-
-</style>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="bootstrap-3.3.5-dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="style.css"/>
+        <title>Wine quality</title>
+    </head>
 <body>
 <script src="d3/d3.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<h2> What make a good wine ? </h2>
+<ul class="nav nav-tabs">
+    <li role="presentation" class="active"><a href="Project1.html">Red wine</a></li>
+    <li role="presentation"><a href="white.html">White wine</a></li>
+    <li role="presentation" ><a href="TestD3.html">test</a></li>
+</ul>
 <script>
     
-var width = 960,
+/*var width = 960,
     size = 150,
     padding = 19.5;
 
@@ -93,7 +76,7 @@ d3.csv("data/wine_white.csv", function(data1) {
         });*/
         
         //var data = data1.concat(data2);
-        var data = data1;
+ /*       var data = data1;
         
         var domainByTrait = {},
             traits = d3.keys(data[0]).filter(function(d) { return d !== "color"; }),

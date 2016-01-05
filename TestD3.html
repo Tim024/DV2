@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="bootstrap-3.3.5-dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="style.css"/>
+        <title>Wine quality</title>
+    </head>
+<body>
+<script src="d3/d3.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<h2> What make a good wine ? </h2>
+<ul class="nav nav-tabs">
+    <li role="presentation" ><a href="Project1.html">Red wine</a></li>
+    <li role="presentation"><a href="white.html">White wine</a></li>
+    <li role="presentation" class="active"><a href="FunctionQuality.html">test</a></li>
+</ul>
+<script>
+    
+/*var width = 960,
+    size = 150,
+    padding = 19.5;
+
+var x = d3.scale.linear()
+    .range([padding / 2, size - padding / 2]);
+
+var y = d3.scale.linear()
+    .range([size - padding / 2, padding / 2]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom")
+    .ticks(5);
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .ticks(5);
+
+var color = d3.scale.category10();*/
+var w = 500;
+var h= 1500;
+    
+d3.csv("data/wine_white.csv", function(data1) {
+        data1.forEach(function(d) {
+            d.volatileacidity =+ d.volatileacidity;
+            d.citricacid = +d.citricacid;
+            d.residualsugar = +d.residualsugar;
+            d.chlorides = +d.chlorides;
+            d.freesulfurdioxide = +d.freesulfurdioxide;
+            d.totalsulfurdioxide = +d.totalsulfurdioxide;
+            d.density = +d.density;
+            d.pH = +d.pH;
+            d.alcohol = +d.alcohol;
+            d.sulphates = +d.sulphates;
+            d.quality = +d.quality;
+            d.fixedacidity = +d.fixedacidity;
+            d.color = "white";
+        });
+
+        var xScale = d3.scale.linear()
+                     .domain([0, d3.max(data1, function(d) { return d.quality; })])
+                     .range([0, w]);
+
+        var yScale = d3.scale.linear()
+                     .domain([0, d3.max(data1, function(d) { return d.density*15000-14800; })])
+                     .range([0, h]);
+        
+        var svg = d3.select("body").append("svg");
+        svg.attr("width", 5000)
+           .attr("height", 2000);
+
+        svg.append("g")
+          .attr("class", "axis")
+          .attr("transform", "translate(0," + (h) + ")")
+          .call(d3.svg.axis()
+                      .scale(xScale)
+                      .orient("bottom"));
+
+        svg.append("g")
+          .attr("class", "axis")
+          .call(d3.svg.axis()
+                      .scale(yScale)
+                      .orient("left"));
+
+        var circles = svg.selectAll("circle")
+           .data(data1)
+           .enter()
+           .append("circle");
+
+        circles.attr("cx", function(d) {
+               return xScale(d.quality); //d.quality*50
+            })
+          .attr("cy", function(d) {
+               return yScale(d.density*15000-14800); //d.density*15000-14800
+            })
+          .attr("r", 4)
+          .attr("fill", "#5882FA")
+          .attr("stroke", "#0431B4")
+          .attr("stroke-width", function(d) {
+              return d/3;
+            });
+
+
+        /*d3.select("body").selectAll("p")
+          .data(data1)
+          .enter()
+          .append("p")
+          .text(function(d) { return d.quality; });*/
+
+});
+        
+        
+
+</script>
