@@ -3,6 +3,10 @@ h2 {
     color: #848484;
 }
 
+li {
+    list-style : none;
+}
+/*
 .axis path,
 .axis line {
     fill: none;
@@ -14,14 +18,18 @@ h2 {
     font-family: sans-serif;
     font-size: 11px;
 }
-
+*/
 
 svg {
     font: 10px sans-serif;
-    padding : 30px;
-    padding-left: 300px;
+    margin : 30px;
+    /*padding-left:-30px;*/
+    margin-left:300px;
+    /*border-width:4px;
+    border-style:outset;
+    border-color:#848484;*/
 }
-
+/*
 .axis,
 .frame {
     shape-rendering: crispEdges;
@@ -33,7 +41,7 @@ svg {
 
 .axis path {
     display: none;
-}
+}*/
 /*
 .frame {
     fill: none;
@@ -46,5 +54,52 @@ circle {
 
 /*.dessous {
     margin-top: 100px;
-}/*
+}*/
+
+/*HOME*/
+#tool-box {
+    border-width:4px;
+    border-style:outset;
+    border-color:#848484;
+    width : 300px;
+    padding: 20px;
+    margin : 20px;
+    float : left;
+}
+
+#tool-box a:link {
+    color: #848484;
+}
+#tool-box a:hover, a:focus, a:active {
+    color: black;
+    text-decoration: none;
+}
+
+#tool-box a:visited {
+    color: #848484;;
+}
+
+#style {
+    float : right;
+    padding:20px;
+    margin : 20px;
+    margin-right: 100px;
+    width: 800px;
+    border-width:4px;
+    border-style:outset;
+    border-color:#848484;
+    height: 600px;
+}
+
+#tool-titre {
+    font-weight: bold;
+}
+
+
+
+
+
+
+
+
 
