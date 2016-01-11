@@ -14,14 +14,15 @@ d3.box = function() {
     numBars = 4,
     curBar = 1,
       tickFormat = null;
-console.log(number);
   // For each small multiple…
   function box(g) {
+    console.log(g);
     g.each(function(data, i) {
+      console.log("et la");
       //d = d.map(value).sort(d3.ascending);
     //var boxIndex = data[0];
     //var boxIndex = 1;
-    var d = data.sort(d3.ascending);   //ici que tous se joue essayer de mettre data
+    var d = data[value].sort(d3.ascending);   //ici que tous se joue essayer de mettre data
     
    // console.log(boxIndex); 
     
@@ -32,18 +33,17 @@ console.log(number);
 
       // Compute quartiles. Must return exactly 3 elements.
       var quartileData = d.quartiles = quartiles(d);
-      console.log(data);
 
       // Compute whiskers. Must return exactly 2 elements, or null.
       var whiskerIndices = whiskers && whiskers.call(this, d, i),
           whiskerData = whiskerIndices && whiskerIndices.map(function(i) { return d[i]; });
-
+//console.log(whiskerData);
       // Compute outliers. If no whiskers are specified, all data are "outliers".
       // We compute the outliers as indices, so that we can join across transitions!
       var outlierIndices = whiskerIndices
           ? d3.range(0, whiskerIndices[0]).concat(d3.range(whiskerIndices[1] + 1, n))
           : d3.range(n);
-
+//console.log(outlierIndices);
       // Compute the new x-scale.
       var x1 = d3.scale.linear()
           .domain(domain && domain.call(this, d, i) || [min, max])
@@ -66,7 +66,6 @@ console.log(number);
       // Update center line: the vertical line spanning the whiskers.
       var center = g.selectAll("line.center")
           .data(whiskerData ? [whiskerData] : []);
-
    //vertical line
       center.enter().insert("line", "rect")
           .attr("class", "center")
