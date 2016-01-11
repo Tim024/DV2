@@ -4,6 +4,7 @@
 d3.box = function() {
   var width = 1,
       height = 1,
+      number = 1,
       duration = 0,
       domain = null,
       value = Number,
@@ -20,8 +21,9 @@ d3.box = function() {
       //d = d.map(value).sort(d3.ascending);
     //var boxIndex = data[0];
     //var boxIndex = 1;
-    var d = data[1].sort(d3.ascending);   //ici que tous se joue essayer de mettre data
+    var d = data[value].sort(d3.ascending);   //ici que tous se joue essayer de mettre data
     
+    console.log(value);
    // console.log(boxIndex); 
     
       var g = d3.select(this),
@@ -31,6 +33,7 @@ d3.box = function() {
 
       // Compute quartiles. Must return exactly 3 elements.
       var quartileData = d.quartiles = quartiles(d);
+      console.log(data);
 
       // Compute whiskers. Must return exactly 2 elements, or null.
       var whiskerIndices = whiskers && whiskers.call(this, d, i),

@@ -330,7 +330,8 @@ for (var it=1; it<6; it++){
   
   var chart = d3.box()
     .whiskers(iqr(1.5))
-    .height(height) 
+    .height(height)
+    .value(1)
     .domain([min[1], max[1]])
     .showLabels(labels);
 
@@ -362,7 +363,7 @@ for (var it=1; it<6; it++){
 
   // draw the boxplots  
   svg.selectAll(".box")  
-      .data(data)
+      .data(data) 
     .enter().append("g")
     .attr("transform", function(d) { return "translate(" +  x(d[0])  + "," + margin.top + ")"; } )
       .call(chart.width(x.rangeBand())); 
@@ -427,6 +428,7 @@ for (var it=1; it<6; it++){
 
           function transitionCitricacid() {
             chart.whiskers(iqr(1.5))
+                 .value(3)
                  .height(height) 
                  .domain([min[5], max[5]])
                  .showLabels(labels);
@@ -446,8 +448,14 @@ for (var it=1; it<6; it++){
                   .attr("dy", ".71em")
                   .style("text-anchor", "end")
                   .style("font-size", "16px") 
-                  .text("Citric acid"); 
-                
+                  .text("Citric acid");
+                  
+                  
+                  svg.selectAll(".box")  
+                    .data(data) 
+                    .enter().append("g")
+                    .attr("transform", function(d) { return "translate(" +  x(d[0])  + "," + margin.top + ")"; } )
+                    .call(chart.width(x.rangeBand())); 
 
 
             //yScale.domain([0, d3.max(data1, function(d) { return d.citricacid; })])
