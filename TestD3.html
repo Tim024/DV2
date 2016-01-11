@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="bootstrap-3.3.5-dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="style.css"/>
+        <link rel="stylesheet" href="style2.css"/>
+        <title>Wine quality</title>
+    </head>
+<body>
+<script src="d3/d3.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="script.js"></script>
+<script src="box.js"></script>
+<h2> What make a good wine ? </h2>
+<ul class="nav nav-tabs">
+    <li role="presentation" ><a href="Project1.html">Red wine</a></li>
+    <li role="presentation"><a href="white.html">White wine</a></li>
+    <li role="presentation" class="active"><a href="TestD3.html">First version</a></li>
+    <li role="presentation"><a href="Home.html">Home</a></li>
+</ul>
+<form>
+  <label><input type="radio" name="mode" value="volatileacidity"> Volatile acidity</label>
+  <label><input type="radio" name="mode" value="citricacid"> Citric acid</label>
+  <label><input type="radio" name="mode" value="alcohol" checked> Alcohol</label>
+  <label><input type="radio" name="mode" value="fixedacidity"> Fixed acidity</label>
+</form>
+<div></div>
+<script>
+   /* 
+var w = 500;
+var h= 1500;
+    
+d3.csv("data/wine_white.csv", function(data1) {
+        data1.forEach(function(d) {
+            d.volatileacidity =+ d.volatileacidity;
+            d.citricacid = +d.citricacid;
+            d.residualsugar = +d.residualsugar;
+            d.chlorides = +d.chlorides;
+            d.freesulfurdioxide = +d.freesulfurdioxide;
+            d.totalsulfurdioxide = +d.totalsulfurdioxide;
+            d.density = +d.density;
+            d.pH = +d.pH;
+            d.alcohol = +d.alcohol;
+            d.sulphates = +d.sulphates;
+            d.quality = +d.quality;
+            d.fixedacidity = +d.fixedacidity;
+            d.color = "white";
+        });
+
+        var xScale = d3.scale.linear()
+                     .domain([0, d3.max(data1, function(d) { return d.quality; })])
+                     .range([0, w]);
+
+        var yScale = d3.scale.linear()
+                     .domain([0, d3.max(data1, function(d) { return d.density*15000-14800; })])
+                     .range([0, h]);
+        
+        var svg = d3.select("div").append("svg");
+        svg.attr("width", 600)
+           .attr("height", 600);
+
+        svg.append("g")
+          .attr("class", "axis")
+          //.attr("transform", "translate(0," + (h) + ")")
+          .call(d3.svg.axis()
+                      .scale(xScale)
+                      .orient("bottom"));
+
+        svg.append("g")
+          .attr("class", "axis")
+          .call(d3.svg.axis()
+                      .scale(yScale)
+                      .orient("left"));
+
+        var circles = svg.selectAll("circle")
+           .data(data1)
+           .enter()
+           .append("circle");
+
+        circles.attr("cx", function(d) {
+               return xScale(d.quality); //d.quality*50
+            })
+          .attr("cy", function(d) {
+               return yScale(d.density*15000-14800); //d.density*15000-14800
+            })
+          .attr("r", 4)
+          .attr("fill", "#5882FA")
+          .attr("stroke", "#0431B4")
+          .attr("stroke-width", function(d) {
+              return d/3;
+            });
+
+
+        /*d3.select("body").selectAll("p")
+          .data(data1)
+          .enter()
+          .append("p")
+          .text(function(d) { return d.quality; });*/
+
+         /* d3.selectAll("input").on("change", change);
+
+          /*var timeout = setTimeout(function() {
+            d3.select("input[value=\"citricacid\"]").property("checked", true).each(change);
+          }, 2000);*/
+
+        /*  function change() {
+            console.log(this.value);
+            //clearTimeout(timeout);
+            switch(this.value) {
+                case "citricacid":
+                    console.log("coucou");
+                    transitionCitricacid();
+                    break;
+                case "alcohol":
+                    transitionAlcohol();
+                    break;
+                case "volatileacidity":
+                    transitionVolatileacidity();
+                    break;
+                case "fixedacidity":
+                    transitionFixedacidity();
+                    break;
+                default:
+                    transitionVolatileacidity();
+            }
+          }
+
+          function transitionCitricacid() {
+            yScale.domain([0, d3.max(data1, function(d) { return d.citricacid; })])
+            circles.attr("cy", function(d) {
+               return yScale(d.citricacid); //d.density*15000-14800
+
+            })
+
+            svg.select("g")
+              .attr("class", "axis")
+              .call(d3.svg.axis()
+                          .scale(xScale)
+                          .orient("bottom"));
+
+            svg.select("g")
+              .attr("class", "axis")
+              .call(d3.svg.axis()
+                          .scale(yScale)
+                          .orient("left"));
+          }
+
+          function transitionAlcohol() {
+            yScale.domain([0, d3.max(data1, function(d) { return d.alcohol; })])
+            circles.attr("cy", function(d) {
+               return yScale(d.alcohol); //d.density*15000-14800
+            })
+
+                        svg.select("g")
+              .attr("class", "axis")
+              .call(d3.svg.axis()
+                          .scale(xScale)
+                          .orient("bottom"));
+
+            svg.select("g")
+              .attr("class", "axis")
+              .call(d3.svg.axis()
+                          .scale(yScale)
+                          .orient("left"));
+
+          }
+
+          function transitionVolatileacidity() {
+            yScale.domain([0, d3.max(data1, function(d) { return d.volatileacidity; })])
+
+            svg.select("g")
+              .attr("class", "axis")
+              .call(d3.svg.axis()
+                          .scale(xScale)
+                          .orient("bottom"));
+
+            svg.select("g")
+              .attr("class", "axis")
+              .call(d3.svg.axis()
+                          .scale(yScale)
+                          .orient("left"));
+           
+
+            circles.attr("cy", function(d) {
+               return yScale(d.volatileacidity); //d.density*15000-14800
+
+             })
+
+
+          }
+
+          function transitionFixedacidity() {
+            yScale.domain([0, d3.max(data1, function(d) { return d.fixedacidity; })])
+
+            svg.select("g")
+              .attr("class", "axis")
+              .call(d3.svg.axis()
+                          .scale(xScale)
+                          .orient("bottom"));
+
+            svg.select("g")
+              .attr("class", "axis")
+              .call(d3.svg.axis()
+                          .scale(yScale)
+                          .orient("left"));
+            
+
+            circles.attr("cy", function(d) {
+               return yScale(d.fixedacidity); //d.density*15000-14800
+
+            })
+          }
+
+        });*/
+
+var labels = true; // show the text labels beside individual boxplots?
+
+var margin = {top: 30, right: 50, bottom: 70, left: 50};
+var  width = 800 - margin.left - margin.right;
+var height = 400 - margin.top - margin.bottom;
+  
+var min = Infinity,
+    max = -Infinity;
+  
+// parse in the data  
+d3.csv("data/wine_white.csv", function(error, csv) {
+  // using an array of arrays with
+  // data[n][2] 
+  // where n = number of columns in the csv file 
+  // data[i][0] = name of the ith column
+  // data[i][1] = array of values of ith column
+
+  var data = [];
+  data[0] = [];
+  data[1] = [];
+  data[2] = [];
+  data[3] = [];
+  data[4] = [];
+  data[5] = [];
+  data[6] = [];
+  data[7] = [];
+  data[8] = [];
+  data[9] = [];
+
+  // add here the header of the csv file
+  data[0][0] = "1";
+  data[1][0] = "2";
+  data[2][0] = "3";
+  data[3][0] = "4";
+  data[4][0] = "5";
+  data[5][0] = "6";
+  data[6][0] = "7";
+  data[7][0] = "8";
+  data[8][0] = "9";
+  data[9][0] = "10";
+
+for(var i=1; i<6; i++) {
+  data[0][i] = [0];
+  data[1][i] = [0];
+  data[2][i] = [];
+  data[3][i] = [];
+  data[4][i] = [];
+  data[5][i] = [];
+  data[6][i] = [];
+  data[7][i] = [];
+  data[8][i] = [];
+  data[9][i] = [0];
+}
+  
+var rowMax = [];
+var rowMin = [];
+var max = [];
+var min = [];
+for (var it=1; it<6; it++){
+  max[it] = 0;
+  min[it] = 10000000000;
+}
+  csv.forEach(function(x) {
+    var v1 = Math.floor(x.alcohol),
+        v2 = Math.floor(x.quality);
+        v3 = Math.floor(x.fixedacidity);
+        v4 = Math.floor(x.volatileacidity);//idem
+        v5 = Math.floor(x.citricacid);// faire un floor n'a pas de sens (multiplier par 10 avant et modifier l'échelle ?)
+      
+    data[v2-1][1].push(v1);
+    data[v2-1][2].push(0);//pour pas casser le modele de data
+    data[v2-1][3].push(v3);
+    data[v2-1][4].push(v4);
+    data[v2-1][5].push(v5);
+
+    rowMax[1] = v1;
+    rowMin[1] = v1;
+    rowMax[2] = v2;
+    rowMin[2] = v2;
+    rowMax[3] = v3;
+    rowMin[3] = v3;
+    rowMax[4] = v4;
+    rowMin[4] = v4;
+    rowMax[5] = v5;
+    rowMin[5] = v5;
+    for (var iter=1; iter<6; iter++){
+      if (rowMax[iter] > max[iter]) {
+        max[iter] = rowMax[iter];
+      }
+      if (rowMin[iter] < min[iter]) {
+        min[iter] = rowMin[iter];
+      }
+    }
+  });
+
+  var invdata = [];
+    invdata[1] = [];
+    invdata[2] = [];
+    invdata[3] = [];
+    invdata[4] = [];
+    invdata[5] = [];
+
+    for (var i =0; i < 10; i++) {
+      for (var j =1; j < 6; j++) {
+         //invdata[j][i]=[];
+         invdata[j][i]=data[i][j];
+      }
+      
+     }
+     console.log(invdata[1]);
+     console.log(data);
+
+  
+  var chart = d3.box()
+    .whiskers(iqr(1.5))
+    .height(height) 
+    .domain([min[1], max[1]])
+    .showLabels(labels);
+
+  var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .attr("class", "box")    
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  
+  // the x-axis
+  var x = d3.scale.ordinal()     
+    .domain( data.map(function(d) { return d[0] } ) )     
+    .rangeRoundBands([0 , width], 0.7, 0.3);    
+
+
+  var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+  // the y-axis
+  var y = d3.scale.linear()
+    .domain([min[1], max[1]])
+    .range([height + margin.top, 0 + margin.top]);
+  
+  var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
+
+  // draw the boxplots  
+  svg.selectAll(".box")  
+      .data(data) //essayer de mettre invdata[1]
+      .attr("number",3)
+    .enter().append("g")
+    .attr("transform", function(d) { return "translate(" +  x(d[0])  + "," + margin.top + ")"; } )
+      .call(chart.width(x.rangeBand())); 
+  
+        
+  // add a title
+  /*svg.append("text")
+        .attr("x", (width / 2))             
+        .attr("y", 0 + (margin.top / 2))
+        .attr("text-anchor", "middle")  
+        .style("font-size", "18px") 
+        //.style("text-decoration", "underline")  
+        .text("Components of white wine");*/
+ 
+   // draw y axis
+  svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+    .append("text") // and text1
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .style("font-size", "16px") 
+      .text("Alcohol");    
+  
+  // draw x axis  
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + (height  + margin.top + 10) + ")")
+      .call(xAxis)
+    .append("text")             // text label for the x axis
+        .attr("x", (width / 2) )
+        .attr("y",  10 )
+    .attr("dy", ".71em")
+        .style("text-anchor", "middle")
+    .style("font-size", "16px") 
+        .text("Quality"); 
+
+
+        d3.selectAll("input").on("change", change);
+
+        function change() {
+            //clearTimeout(timeout);
+            switch(this.value) {
+                case "citricacid":
+                    transitionCitricacid();
+                    break;
+                case "alcohol":
+                    transitionAlcohol();
+                    break;
+                case "volatileacidity":
+                    transitionVolatileacidity();
+                    break;
+                case "fixedacidity":
+                    transitionFixedacidity();
+                    break;
+                default:
+                    transitionVolatileacidity();
+            }
+          }
+
+          function transitionCitricacid() {
+            chart.whiskers(iqr(1.5))
+                 .height(height) 
+                 .domain([min[5], max[5]])
+                 .showLabels(labels);
+
+              y.domain([min[5], max[5]])
+               .range([height + margin.top, 0 + margin.top]);
+              
+              yAxis.scale(y)
+                   .orient("left");  
+
+                svg.select("g")
+                    .attr("class", "y axis")
+                    .call(yAxis)
+                .select("text") // and text1
+                  .attr("transform", "rotate(-90)")
+                  .attr("y", 6)
+                  .attr("dy", ".71em")
+                  .style("text-anchor", "end")
+                  .style("font-size", "16px") 
+                  .text("Citric acid"); 
+
+                svg.selectAll(".box").attr("number",3)   
+
+
+            //yScale.domain([0, d3.max(data1, function(d) { return d.citricacid; })])
+            //circles.attr("cy", function(d) {
+             //  return yScale(d.citricacid); //d.density*15000-14800
+
+            //})
+
+            /*svg.select("g")
+              .attr("class", "axis")
+              .call(d3.svg.axis()
+                          .scale(xScale)
+                          .orient("bottom"));
+
+            svg.select("g")
+              .attr("class", "axis")
+              .call(d3.svg.axis()
+                          .scale(yScale)
+                          .orient("left"));*/
+          }
+
+          function transitionAlcohol() {
+            yScale.domain([0, d3.max(data1, function(d) { return d.alcohol; })])
+            circles.attr("cy", function(d) {
+               return yScale(d.alcohol); //d.density*15000-14800
+            })
+
+                        svg.select("g")
+              .attr("class", "axis")
+              .call(d3.svg.axis()
+                          .scale(xScale)
+                          .orient("bottom"));
+
+            svg.select("g")
+              .attr("class", "axis")
+              .call(d3.svg.axis()
+                          .scale(yScale)
+                          .orient("left"));
+
+          }
+
+          function transitionVolatileacidity() {
+            yScale.domain([0, d3.max(data1, function(d) { return d.volatileacidity; })])
+
+            svg.select("g")
+              .attr("class", "axis")
+              .call(d3.svg.axis()
+                          .scale(xScale)
+                          .orient("bottom"));
+
+            svg.select("g")
+              .attr("class", "axis")
+              .call(d3.svg.axis()
+                          .scale(yScale)
+                          .orient("left"));
+           
+
+            circles.attr("cy", function(d) {
+               return yScale(d.volatileacidity); //d.density*15000-14800
+
+             })
+
+
+          }
+
+          function transitionFixedacidity() {
+            yScale.domain([0, d3.max(data1, function(d) { return d.fixedacidity; })])
+
+            svg.select("g")
+              .attr("class", "axis")
+              .call(d3.svg.axis()
+                          .scale(xScale)
+                          .orient("bottom"));
+
+            svg.select("g")
+              .attr("class", "axis")
+              .call(d3.svg.axis()
+                          .scale(yScale)
+                          .orient("left"));
+            
+
+            circles.attr("cy", function(d) {
+               return yScale(d.fixedacidity); //d.density*15000-14800
+
+            })
+          }
+
+});
+
+// Returns a function to compute the interquartile range.
+function iqr(k) {
+  return function(d, i) {
+    var q1 = d.quartiles[0],
+        q3 = d.quartiles[2],
+        iqr = (q3 - q1) * k,
+        i = -1,
+        j = d.length;
+    while (d[++i] < q1 - iqr);
+    while (d[--j] > q3 + iqr);
+    return [i, j];
+  };
+}
+        
+        
+
+</script>
