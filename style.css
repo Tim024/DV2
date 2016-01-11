@@ -24,10 +24,9 @@ svg {
     font: 10px sans-serif;
     margin : 30px;
     /*padding-left:-30px;*/
-    margin-left:300px;
-    /*border-width:4px;
-    border-style:outset;
-    border-color:#848484;*/
+    margin-left:-300px;
+    float : right;
+    width: 900px;
 }
 /*
 .axis,
@@ -61,7 +60,7 @@ circle {
     border-width:4px;
     border-style:outset;
     border-color:#848484;
-    width : 300px;
+    width : 200px;
     padding: 20px;
     margin : 20px;
     float : left;
@@ -79,7 +78,7 @@ circle {
     color: #848484;;
 }
 
-#style {
+/*#style {
     float : right;
     padding:20px;
     margin : 20px;
@@ -89,7 +88,7 @@ circle {
     border-style:outset;
     border-color:#848484;
     height: 600px;
-}
+}*/
 
 #tool-titre {
     font-weight: bold;

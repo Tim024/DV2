@@ -26,194 +26,31 @@
   <label><input type="radio" name="mode" value="alcohol" checked> Alcohol</label>
   <label><input type="radio" name="mode" value="fixedacidity"> Fixed acidity</label>
 </form>
-<div></div>
+
+<div id="data">
+<div id="tool-box">
+<p id="tool-titre"> Chemical components link with quality</p>
+<ul>
+    <li><a href="Hello.html">Hello</a></li>
+    <li><a href="#">Volatile acidity</a></li>
+    <li><a href="#">Citric acid</a></li>
+    <li><a href="Hello.html">Residual sugar</a></li>
+    <li><a href="#">Chlorides</a></li>
+    <li><a href="#">Free sulfur dioxide</a></li>
+    <li><a href="#">Total sulfur dioxide</a></li>
+    <li><a href="Density.html">Density</a></li>
+    <li><a href="#">pH</a></li>
+    <li><a href="#">Alcohol</a></li>
+    <li><a href="#">Sulphates</a></li>
+    <li><a href="#">Quality</a></li>
+    <li><a href="#">Fixed acidity</a></li>
+</ul>
+<p id="tool-titre"> Other </p>
+<ul>
+    <li><a href="#">Alcohol and Acidity</a></li>
+    <li><a href="#">Comparison good wine caracteristics, Bad wine caracteristics</a></li>
+</ul>
 <script>
-   /* 
-var w = 500;
-var h= 1500;
-    
-d3.csv("data/wine_white.csv", function(data1) {
-        data1.forEach(function(d) {
-            d.volatileacidity =+ d.volatileacidity;
-            d.citricacid = +d.citricacid;
-            d.residualsugar = +d.residualsugar;
-            d.chlorides = +d.chlorides;
-            d.freesulfurdioxide = +d.freesulfurdioxide;
-            d.totalsulfurdioxide = +d.totalsulfurdioxide;
-            d.density = +d.density;
-            d.pH = +d.pH;
-            d.alcohol = +d.alcohol;
-            d.sulphates = +d.sulphates;
-            d.quality = +d.quality;
-            d.fixedacidity = +d.fixedacidity;
-            d.color = "white";
-        });
-
-        var xScale = d3.scale.linear()
-                     .domain([0, d3.max(data1, function(d) { return d.quality; })])
-                     .range([0, w]);
-
-        var yScale = d3.scale.linear()
-                     .domain([0, d3.max(data1, function(d) { return d.density*15000-14800; })])
-                     .range([0, h]);
-        
-        var svg = d3.select("div").append("svg");
-        svg.attr("width", 600)
-           .attr("height", 600);
-
-        svg.append("g")
-          .attr("class", "axis")
-          //.attr("transform", "translate(0," + (h) + ")")
-          .call(d3.svg.axis()
-                      .scale(xScale)
-                      .orient("bottom"));
-
-        svg.append("g")
-          .attr("class", "axis")
-          .call(d3.svg.axis()
-                      .scale(yScale)
-                      .orient("left"));
-
-        var circles = svg.selectAll("circle")
-           .data(data1)
-           .enter()
-           .append("circle");
-
-        circles.attr("cx", function(d) {
-               return xScale(d.quality); //d.quality*50
-            })
-          .attr("cy", function(d) {
-               return yScale(d.density*15000-14800); //d.density*15000-14800
-            })
-          .attr("r", 4)
-          .attr("fill", "#5882FA")
-          .attr("stroke", "#0431B4")
-          .attr("stroke-width", function(d) {
-              return d/3;
-            });
-
-
-        /*d3.select("body").selectAll("p")
-          .data(data1)
-          .enter()
-          .append("p")
-          .text(function(d) { return d.quality; });*/
-
-         /* d3.selectAll("input").on("change", change);
-
-          /*var timeout = setTimeout(function() {
-            d3.select("input[value=\"citricacid\"]").property("checked", true).each(change);
-          }, 2000);*/
-
-        /*  function change() {
-            console.log(this.value);
-            //clearTimeout(timeout);
-            switch(this.value) {
-                case "citricacid":
-                    console.log("coucou");
-                    transitionCitricacid();
-                    break;
-                case "alcohol":
-                    transitionAlcohol();
-                    break;
-                case "volatileacidity":
-                    transitionVolatileacidity();
-                    break;
-                case "fixedacidity":
-                    transitionFixedacidity();
-                    break;
-                default:
-                    transitionVolatileacidity();
-            }
-          }
-
-          function transitionCitricacid() {
-            yScale.domain([0, d3.max(data1, function(d) { return d.citricacid; })])
-            circles.attr("cy", function(d) {
-               return yScale(d.citricacid); //d.density*15000-14800
-
-            })
-
-            svg.select("g")
-              .attr("class", "axis")
-              .call(d3.svg.axis()
-                          .scale(xScale)
-                          .orient("bottom"));
-
-            svg.select("g")
-              .attr("class", "axis")
-              .call(d3.svg.axis()
-                          .scale(yScale)
-                          .orient("left"));
-          }
-
-          function transitionAlcohol() {
-            yScale.domain([0, d3.max(data1, function(d) { return d.alcohol; })])
-            circles.attr("cy", function(d) {
-               return yScale(d.alcohol); //d.density*15000-14800
-            })
-
-                        svg.select("g")
-              .attr("class", "axis")
-              .call(d3.svg.axis()
-                          .scale(xScale)
-                          .orient("bottom"));
-
-            svg.select("g")
-              .attr("class", "axis")
-              .call(d3.svg.axis()
-                          .scale(yScale)
-                          .orient("left"));
-
-          }
-
-          function transitionVolatileacidity() {
-            yScale.domain([0, d3.max(data1, function(d) { return d.volatileacidity; })])
-
-            svg.select("g")
-              .attr("class", "axis")
-              .call(d3.svg.axis()
-                          .scale(xScale)
-                          .orient("bottom"));
-
-            svg.select("g")
-              .attr("class", "axis")
-              .call(d3.svg.axis()
-                          .scale(yScale)
-                          .orient("left"));
-           
-
-            circles.attr("cy", function(d) {
-               return yScale(d.volatileacidity); //d.density*15000-14800
-
-             })
-
-
-          }
-
-          function transitionFixedacidity() {
-            yScale.domain([0, d3.max(data1, function(d) { return d.fixedacidity; })])
-
-            svg.select("g")
-              .attr("class", "axis")
-              .call(d3.svg.axis()
-                          .scale(xScale)
-                          .orient("bottom"));
-
-            svg.select("g")
-              .attr("class", "axis")
-              .call(d3.svg.axis()
-                          .scale(yScale)
-                          .orient("left"));
-            
-
-            circles.attr("cy", function(d) {
-               return yScale(d.fixedacidity); //d.density*15000-14800
-
-            })
-          }
-
-        });*/
 
 var labels = true; // show the text labels beside individual boxplots?
 
