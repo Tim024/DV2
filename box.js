@@ -14,10 +14,7 @@ d3.box = function() {
     numBars = 4,
     curBar = 1,
       tickFormat = null;
-<<<<<<< HEAD
-=======
-      
->>>>>>> fd67e1e887fa1d64152ddce4182b52977a6cbc1f
+
   // For each small multiple…
   function box(g) {
     console.log(g);
@@ -28,7 +25,6 @@ d3.box = function() {
     //var boxIndex = 1;
     var d = data[value].sort(d3.ascending);   //ici que tous se joue essayer de mettre data
     
-    console.log(value);
    // console.log(boxIndex); 
     
       var g = d3.select(this),
