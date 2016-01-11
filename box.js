@@ -21,7 +21,7 @@ console.log(number);
       //d = d.map(value).sort(d3.ascending);
     //var boxIndex = data[0];
     //var boxIndex = 1;
-    var d = data[1].sort(d3.ascending);   //ici que tous se joue essayer de mettre data
+    var d = data.sort(d3.ascending);   //ici que tous se joue essayer de mettre data
     
    // console.log(boxIndex); 
     
@@ -32,6 +32,7 @@ console.log(number);
 
       // Compute quartiles. Must return exactly 3 elements.
       var quartileData = d.quartiles = quartiles(d);
+      console.log(data);
 
       // Compute whiskers. Must return exactly 2 elements, or null.
       var whiskerIndices = whiskers && whiskers.call(this, d, i),
