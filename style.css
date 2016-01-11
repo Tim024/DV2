@@ -6,19 +6,6 @@ h2 {
 li {
     list-style : none;
 }
-/*
-.axis path,
-.axis line {
-    fill: none;
-    stroke: black;
-    shape-rendering: crispEdges;
-}
-
-.axis text {
-    font-family: sans-serif;
-    font-size: 11px;
-}
-*/
 
 svg {
     font: 10px sans-serif;
@@ -28,32 +15,6 @@ svg {
     float : right;
     width: 900px;
 }
-/*
-.axis,
-.frame {
-    shape-rendering: crispEdges;
-}
-
-.axis line {
-    stroke: #ddd;
-}
-
-.axis path {
-    display: none;
-}*/
-/*
-.frame {
-    fill: none;
-    stroke: #aaa;
-}
-
-circle {
-    fill-opacity: .7;
-}
-
-/*.dessous {
-    margin-top: 100px;
-}*/
 
 /*HOME*/
 #tool-box {
@@ -78,22 +39,20 @@ circle {
     color: #848484;;
 }
 
-/*#style {
-    float : right;
-    padding:20px;
-    margin : 20px;
-    margin-right: 100px;
-    width: 800px;
-    border-width:4px;
-    border-style:outset;
-    border-color:#848484;
-    height: 600px;
-}*/
-
 #tool-titre {
     font-weight: bold;
 }
 
+form label {
+    margin-left:10px;
+    font-weight: normal;
+}
+
+form label span {
+    margin-left: 5px;
+    color : #848484;
+
+}
 
 
 
