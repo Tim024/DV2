@@ -3,7 +3,6 @@
 // Inspired by http://informationandvisualization.de/blog/box-plot
 d3.box = function() {
   var width = 1,
-      number = 1,
       height = 1,
       duration = 0,
       domain = null,
@@ -14,7 +13,7 @@ d3.box = function() {
     numBars = 4,
     curBar = 1,
       tickFormat = null;
-console.log(number);
+      
   // For each small multiple…
   function box(g) {
     g.each(function(data, i) {
