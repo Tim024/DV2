@@ -26,7 +26,7 @@ svg {
 }
 
 circle {
-  fill-opacity: .7;
+  fill-opacity: .6;
 }
 
 </style>
@@ -73,7 +73,8 @@ d3.csv("data/wine_white.csv", function(data1) {
             d.sulphates = +d.sulphates;
             d.quality = +d.quality;
             d.fixedacidity = +d.fixedacidity;
-            d.color = "white";
+            //d.color = "white";
+            if(d.quality >= 7) d.color = 0; else if (d.quality<=4)d.color = 2; else d.color = 1;
         });
         
         /*data2.forEach(function(d) {
@@ -94,6 +95,8 @@ d3.csv("data/wine_white.csv", function(data1) {
         
         //var data = data1.concat(data2);
         var data = data1;
+        
+        
         
         var domainByTrait = {},
             traits = d3.keys(data[0]).filter(function(d) { return d !== "color"; }),
