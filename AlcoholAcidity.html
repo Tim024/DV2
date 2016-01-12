@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="bootstrap-3.3.5-dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="style3.css" />
+        <title>Wine quality</title>
+    </head>
+<body>
+<script src="d3/d3.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="script.js"></script>
+<script src="box.js"></script>
+<h2> What make a good wine ? </h2>
+<ul class="nav nav-tabs">
+    <li role="presentation" class="active"><a href="TestD3.html">White wine</a></li>
+    <li role="presentation"><a href="#">Red wine</a></li>
+</ul>
+
+<div id="data">
+<div id="tool-box">
+<p id="tool-titre"><a href="TestD3.html">Chemical components link with quality</a></p>
+<p id="tool-titre"><a href="AlcoholAcidity.html"> Alcohol and acidity </a></p>
+<form>
+  <label><input type="checkbox" name="quality" value="Bad"><span>Bad wine</span></label>
+  <label><input type="checkbox" name="quality" value="Good"><span>Good wine</span></label>
+  <label><input type="checkbox" name="quality" value="Mediocre"><span>Mediocre wine</span></label>
+  <label><input type="checkbox" name="quality" value="OK"><span>Ok wine</span></label>
+</form>
+<script>
+var w = 500;
+var h= 500;
+
+var data= []; 
+/*creer un tableau par couleur qui correspond à une categorie de qualité de vin*/ 
+data[0]={};
+data[1]={};
+data[2]={};
+data[3]={};
+obj={};
+data[4]=[];
+
+for(var i=0; i<4; i++) {
+  //data[0][i] = []; //Bad
+  //data[1][i] = []; //Good
+  //data[2][i] = []; //Mediocre
+  //data[3][i] = [0]; //OK
+  data[4][i] =[] // Ce qu'on veut afficher
+}
+
+var rowMax = [];
+var rowMin = [];
+var max = [];
+var min = [];
+for (var it=1; it<6; it++){
+  max[it] = 0;
+  min[it] = 10000000000;
+}
+
+d3.csv("data/wine_white.csv", function(data1) {
+        data1.forEach(function(d) {
+            /*d.volatileacidity =+ d.volatileacidity;
+            d.citricacid = +d.citricacid;
+            d.residualsugar = +d.residualsugar;
+            d.chlorides = +d.chlorides;
+            d.freesulfurdioxide = +d.freesulfurdioxide;
+            d.totalsulfurdioxide = +d.totalsulfurdioxide;
+            d.density = +d.density;
+            d.pH = +d.pH;
+            d.alcohol = +d.alcohol;
+            d.sulphates = +d.sulphates;
+            d.quality = +d.quality;
+            d.fixedacidity = +d.fixedacidity;*/
+            var v1 = d.quality,
+                v2 = d.alcohol,
+                v3 = d.fixedacidity;
+
+            if (d.quality<5) {
+              obj.color = "#04B431";
+              obj.quality = v1;
+              obj.alcohol = v2;
+              obj.fixedacidity = v3;
+              data[4][0].push(obj);
+              obj={};
+            }
+            if (v1>6) {
+              obj.color = "#FF0000";
+              obj.quality = v1;
+              obj.alcohol = v2;
+              obj.fixedacidity = v3;
+              data[4][1].push(obj);
+              obj={};
+            }
+            if (v1=5){
+              obj.color = "#0000FF";
+              obj.quality = v1;
+              obj.alcohol = v2;
+              obj.fixedacidity = v3;
+              data[4][2].push(obj);
+              obj={};
+            }
+            if (v1=6){
+              obj.color = "#DBA901";
+              obj.quality = v1;
+              obj.alcohol = v2;
+              obj.fixedacidity = v3;
+              data[4][3].push(obj);
+              obj={};
+            }
+
+            rowMax[1] = v1;
+            rowMin[1] = v1;
+            rowMax[2] = v2;
+            rowMin[2] = v2;
+            rowMax[3] = v3;
+            rowMin[3] = v3;
+
+            for (var iter=2; iter<4; iter++){
+              if (rowMax[iter] > max[iter]) {
+                //console.log(rowMax[iter] + " " + max[iter]);
+                max[iter] = rowMax[iter];
+                //console.log(max[iter]);
+              }
+              if (rowMin[iter] < min[iter]) {
+                             //   console.log(iter + " " + rowMin[iter] + " " + min[iter]);
+
+                min[iter] = rowMin[iter];
+                             //   console.log(min[iter]);etonant je ne sais pas ce que fait le if mais ça bug
+
+              }
+            }
+        });
+
+        var xScale = d3.scale.linear()
+                     .domain([7.5, 15])//remettre min et max
+                     .range([0, w]);
+        var yScale = d3.scale.linear()
+                     .domain([2.5, 16])
+                     .range([0, h]);
+
+        var svg = d3.select("div").append("svg");
+        svg.attr("width", 800)
+           .attr("height", 2000);
+
+        svg.append("g")
+          .attr("class", "axis")
+          .attr("transform", "translate(0," + (h) + ")")
+          .call(d3.svg.axis()
+                      .scale(xScale)
+                      .orient("bottom"));
+
+        svg.append("g")
+          .attr("class", "axis")
+          .call(d3.svg.axis()
+                      .scale(yScale)
+                      .orient("left"));
+
+        var circles = svg.selectAll("circle")
+           .data(data[4][3])
+           .enter()
+           .append("circle");
+
+        circles.attr("cx", function(d) {
+          //console.log(d.alcohol);
+
+               return xScale(d.alcohol); //d.quality*50
+            })
+          .attr("cy", function(d) {
+               return yScale(d.fixedacidity); //d.density*15000-14800
+            })
+          .attr("r", 4)
+          .attr("fill", function(d) { return d.color; })
+          .attr("stroke", "#0431B4")
+          .attr("stroke-width", function(d) {
+              return d/3;
+            });
+  });
+</script>

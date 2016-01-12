@@ -21,18 +21,20 @@
 
 <div id="data">
 <div id="tool-box">
-<p id="tool-titre"> Chemical components link with quality</p>
+<p id="tool-titre"><a href="TestD3.html">Chemical components link with quality</a></p>
 <form>
   <label><input type="radio" name="mode" value="volatileacidity"> <span>Volatile acidity</span></label>
   <label><input type="radio" name="mode" value="citricacid"> <span>Citric acid</span></label>
   <label><input type="radio" name="mode" value="alcohol" checked> <span>Alcohol</span></label>
   <label><input type="radio" name="mode" value="fixedacidity"><span> Fixed acidity</span></label>
 </form>
-<p id="tool-titre"> Other </p>
+<p id="tool-titre"><a href="AlcoholAcidity.html"> Alcohol and acidity </a></p>
 <ul>
     <li><a href="#">Alcohol and Acidity</a></li>
     <li><a href="#">Comparison good wine caracteristics, Bad wine caracteristics</a></li>
 </ul>
+</div></div>
+<div id="content"> <strong>On remarque que pour telle propriété en fonction de la qualité on a un pic à tant de unité et une moyenne de blabla, on en deduit que plus un vin blanc est telle caracteristique meilleurs il est.On remarque que pour telle propriété en fonction de la qualité on a un pic à tant de unité et une moyenne de blabla, on en deduit que plus un vin blanc est telle caracteristique meilleurs il est</strong></div>
 <script>
 
 var labels = true; // show the text labels beside individual boxplots?
@@ -230,20 +232,44 @@ for (var it=1; it<6; it++){
             switch(this.value) {
                 case "citricacid":
                     transitionCitricacid();
+                    textCitricacid();
                     break;
                 case "alcohol":
                     transitionAlcohol();
+                    textAlcohol();
                     break;
                 case "volatileacidity":
                     transitionVolatileacidity();
+                    textVolatileacidity();
                     break;
                 case "fixedacidity":
                     transitionFixedacidity();
+                    textFixedacidity();
                     break;
                 default:
                     transitionVolatileacidity();
+                    textVolatileacidity();
             }
           }
+
+          /*fonction pour changer description*/
+          function textCitricacid() {
+            $('#content').html('<strong>Ici placer toute description interressante, je ne sais pas quoi ajouter mais ce text doit être suffisemment long pour pouvoir appliquer des propriété CSS, ce vin doit probablement contenir tel propriété pour être excellent ou tel autre mais peu importante puisque en faite cette caractèristique est completement inutile et personne ne lira jamais ce paragraphe. Jespere.</strong>')
+          }
+
+          function textAlcohol() {
+            $('#content').html('<strong>On remarque que pour telle propriété en fonction de la qualité on a un pic à tant de unité et une moyenne de blabla, on en deduit que plus un vin blanc est telle caracteristique meilleurs il est.On remarque que pour telle propriété en fonction de la qualité on a un pic à tant de unité et une moyenne de blabla, on en deduit que plus un vin blanc est telle caracteristique meilleurs il est</strong>')
+          }
+
+          function textVolatileacidity() {
+            $('#content').html('<strong>Blablabla blabla blablablablab lalalalla blabla blablablablab lalalallablabla blablablablab lalalallablabla blablablablab lalalallablabla blablablablab lalalallablabla blablablablab lalalallablabla blablablablab lalalallablabla blablablablab lalalallablabla blablablablab lalalallablabla blablablablab lalalallablabla blablablablab lalalalla</strong>')
+          }
+
+          function textFixedacidity() {
+            $('#content').html('<strong>Do ré mi la sol fa si do ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si </strong>')
+          }
+
+          /*fonction pour changer data*/
 
           function transitionCitricacid() {
             chart.whiskers(iqr(1.5))
