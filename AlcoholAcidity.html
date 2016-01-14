@@ -194,28 +194,19 @@ d3.csv("data/wine_white.csv", function(data1) {
           .attr("stroke", "#0431B4")
           .attr("stroke-width", function(d) {
               return d/3;
+            })
+          .attr("id","quality6")
+          .on("click", function(){
+              // Determine if current line is visible
+              var checked   = OK.checked ? false : true,
+                newOpacity = checked ? 0 : 1;
+              // Hide or show the elements
+              d3.select("#quality6").style("opacity", newOpacity);
+              // Update whether or not the elements are active
+              OK.checked = checked;
             });
 
-        /*var circles3 = svg.selectAll("circle")
-           .data(data[4][2])
-           .enter()
-           .append("circle");
-
-        circles3.attr("cx", function(d) {
-          //console.log(d.alcohol);
-
-               return xScale(d.alcohol); //d.quality*50
-            })
-          .attr("cy", function(d) {
-               return yScale(d.fixedacidity); //d.density*15000-14800
-            })
-          .attr("r", 4)
-          .attr("fill", function(d) { return d.color; })
-          .attr("stroke", "#0431B4")
-          .attr("stroke-width", function(d) {
-              return d/3;
-            });*/
-
+//faire comme dans l'autre, au debut on affiche ce qui est pertinant avec possibilité autre ajout quand on appui sur les bouton
         /*var circles4 = svg.selectAll("circle")
            .data(data[4][3])
            .enter()
