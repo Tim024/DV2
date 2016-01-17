@@ -23,10 +23,9 @@
 <p id="tool-titre"><a href="TestD3.html">Chemical components link with quality</a></p>
 <p id="tool-titre"><a href="AlcoholAcidity.html"> Alcohol and acidity </a></p>
 <form>
-  <label><input type="checkbox" name="quality" value="Bad"><span>Bad wine</span></label>
-  <label><input type="checkbox" name="quality" value="Good"><span>Good wine</span></label>
-  <label><input type="checkbox" name="quality" value="Mediocre"><span>Mediocre wine</span></label>
-  <label><input type="checkbox" name="quality" value="OK"><span>Ok wine</span></label>
+  <label><input type="checkbox" name="quality" value="Bad" checked><font color="#fc8d59">Bad wine</font></label>
+  <label><input type="checkbox" name="quality" value="Good" checked><font color="#91cf60">Good wine</font></label>
+  <label><input type="checkbox" name="quality" value="Mediocre" checked><font color="#E6E2AF">Common wine</font></label>
 </form>
 <script>
 var w = 500;
@@ -34,18 +33,12 @@ var h= 500;
 
 var data= []; 
 /*creer un tableau par couleur qui correspond à une categorie de qualité de vin*/ 
-data[0]={};
-data[1]={};
-data[2]={};
-data[3]={};
+data[0]={}; data[1]={}; data[2]={}; 
+/*data[3]={};*/
 obj={};
 data[4]=[];
 
 for(var i=0; i<4; i++) {
-  //data[0][i] = []; //Bad
-  //data[1][i] = []; //Good
-  //data[2][i] = []; //Mediocre
-  //data[3][i] = [0]; //OK
   data[4][i] =[] // Ce qu'on veut afficher
 }
 
@@ -60,24 +53,12 @@ for (var it=1; it<6; it++){
 
 d3.csv("data/wine_white.csv", function(data1) {
         data1.forEach(function(d) {
-            /*d.volatileacidity =+ d.volatileacidity;
-            d.citricacid = +d.citricacid;
-            d.residualsugar = +d.residualsugar;
-            d.chlorides = +d.chlorides;
-            d.freesulfurdioxide = +d.freesulfurdioxide;
-            d.totalsulfurdioxide = +d.totalsulfurdioxide;
-            d.density = +d.density;
-            d.pH = +d.pH;
-            d.alcohol = +d.alcohol;
-            d.sulphates = +d.sulphates;
-            d.quality = +d.quality;
-            d.fixedacidity = +d.fixedacidity;*/
             var v1 = d.quality,
                 v2 = d.alcohol,
                 v3 = d.fixedacidity;
 
             if (d.quality<5) {
-              obj.color = "#04B431";
+              obj.color = "#fc8d59";
               obj.quality = v1;
               obj.alcohol = v2;
               obj.fixedacidity = v3;
@@ -85,38 +66,38 @@ d3.csv("data/wine_white.csv", function(data1) {
               obj={};
             }
             if (v1>6) {
-              obj.color = "#FF0000";
+              obj.color = "#91cf60";
               obj.quality = v1;
               obj.alcohol = v2;
               obj.fixedacidity = v3;
               data[4][1].push(obj);
               obj={};
             }
-            if (v1=5){
-              obj.color = "#0000FF";
+            if (v1==5 || v1==6){
+              obj.color = "#E6E2AF";
               obj.quality = v1;
               obj.alcohol = v2;
               obj.fixedacidity = v3;
               data[4][2].push(obj);
               obj={};
             }
-            if (v1=6){
+            /*if (v1==6){
               obj.color = "#DBA901";
               obj.quality = v1;
               obj.alcohol = v2;
               obj.fixedacidity = v3;
               data[4][3].push(obj);
               obj={};
-            }
+            }*/
 
             rowMax[1] = v1;
             rowMin[1] = v1;
             rowMax[2] = v2;
             rowMin[2] = v2;
-            rowMax[3] = v3;
-            rowMin[3] = v3;
+            //rowMax[3] = v3;
+            //rowMin[3] = v3;
 
-            for (var iter=2; iter<4; iter++){
+            for (var iter=1; iter<3; iter++){
               if (rowMax[iter] > max[iter]) {
                 //console.log(rowMax[iter] + " " + max[iter]);
                 max[iter] = rowMax[iter];
@@ -131,12 +112,11 @@ d3.csv("data/wine_white.csv", function(data1) {
               }
             }
         });
-
         var xScale = d3.scale.linear()
-                     .domain([7.5, 15])//remettre min et max
+                     .domain([6, 15])//remettre min et max
                      .range([0, w]);
         var yScale = d3.scale.linear()
-                     .domain([2.5, 16])
+                     .domain([13.5, 2.5])
                      .range([0, h]);
 
         var svg = d3.select("div").append("svg");
@@ -145,17 +125,33 @@ d3.csv("data/wine_white.csv", function(data1) {
 
         svg.append("g")
           .attr("class", "axis")
-          .attr("transform", "translate(0," + (h) + ")")
+          .attr("transform", "translate(" + 30 + "," + (h) + ")")
           .call(d3.svg.axis()
                       .scale(xScale)
                       .orient("bottom"));
 
+        svg.append("text")
+           .attr("x",w/2)
+           .attr("y",h + 45)
+           .style("text-anchor","middle")
+           .text("Alcohol");
+
         svg.append("g")
           .attr("class", "axis")
+          .attr("transform", "translate(" + 20 + ",0)")
           .call(d3.svg.axis()
                       .scale(yScale)
                       .orient("left"));
 
+        svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - 28)
+        .attr("x",0 - (h / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Acidity");
+
+//show or not bad wine
         var circles = svg.selectAll("circle")
            .data(data[4][0])
            .enter()
@@ -174,8 +170,10 @@ d3.csv("data/wine_white.csv", function(data1) {
           .attr("stroke", "#0431B4")
           .attr("stroke-width", function(d) {
               return d/3;
-            });
+            })
+          .style("opacity",1);
 
+//show or not Good wine
         var circles2 = svg.selectAll("circle")
            .data(data[4][1])
            .enter()
@@ -195,37 +193,100 @@ d3.csv("data/wine_white.csv", function(data1) {
           .attr("stroke-width", function(d) {
               return d/3;
             })
-          .attr("id","quality6")
-          .on("click", function(){
-              // Determine if current line is visible
-              var checked   = OK.checked ? false : true,
-                newOpacity = checked ? 0 : 1;
-              // Hide or show the elements
-              d3.select("#quality6").style("opacity", newOpacity);
-              // Update whether or not the elements are active
-              OK.checked = checked;
-            });
+          .style("opacity",1);
 
-//faire comme dans l'autre, au debut on affiche ce qui est pertinant avec possibilité autre ajout quand on appui sur les bouton
-        /*var circles4 = svg.selectAll("circle")
-           .data(data[4][3])
+//show or not Mediocre wine
+        var circles3 = svg.selectAll("circle")
+           .data(data[4][2])
            .enter()
            .append("circle");
 
-        circles4.attr("cx", function(d) {
-          //console.log(d.alcohol);
-
-               return xScale(d.alcohol); //d.quality*50
+        circles3.attr("cx", function(d) {
+               return xScale(d.alcohol);
             })
           .attr("cy", function(d) {
-               return yScale(d.fixedacidity); //d.density*15000-14800
+               return yScale(d.fixedacidity);
             })
           .attr("r", 4)
           .attr("fill", function(d) { return d.color; })
           .attr("stroke", "#0431B4")
           .attr("stroke-width", function(d) {
               return d/3;
-            });*/
+            })
+          .style("opacity",1);
+
+//show or not OK wine
+       /* var circles4 = svg.selectAll("circle")
+           .data(data[4][3])
+           .enter()
+           .append("circle");
+
+        circles4.attr("cx", function(d) {
+               return xScale(d.alcohol);
+            })
+          .attr("cy", function(d) {
+               return yScale(d.fixedacidity);
+            })
+          .attr("r", 4)
+          .attr("fill", function(d) { return d.color; })
+          .attr("stroke", "#0431B4")
+          .attr("stroke-width", function(d) {
+              return d/3;
+            })
+          .style("opacity",0);*/
+
+        d3.selectAll("input").on("change", change);
+
+        var checked = [];
+        checked[1] = true; //Bad
+        checked[2] = true, //Good
+        checked[3] = true; //Med
+        //checked[4] = false; //OK
+        function change() {
+            //clearTimeout(timeout);
+            switch(this.value) {
+                case "Mediocre":
+                  checked[3]   = !checked[3];
+                  Mediocre();
+                    break;
+                case "Good":
+                  checked[2]   = !checked[2];
+                  Good();
+                    break;
+                case "Bad":
+                  checked[1]   = !checked[1];
+                  Bad();
+                    break;
+                default:
+            }
+          }
+
+        function Good() {
+          if (checked[2]==true) {
+            circles2.style("opacity",0.7);
+          }
+          else {
+            circles2.style("opacity",0);
+          }
+        }
+
+        function Bad() {
+          if (checked[1]==true) {
+            circles.style("opacity",0.7);
+          }
+          else {
+            circles.style("opacity",0);
+          }
+        }
+
+        function Mediocre() {
+          if (checked[3]==true) {
+            circles3.style("opacity",0.7);
+          }
+          else {
+            circles3.style("opacity",0);
+          }
+        }
 
 
 
