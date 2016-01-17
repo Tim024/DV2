@@ -23,9 +23,9 @@
 <p id="tool-titre"><a href="TestD3.html">Chemical components link with quality</a></p>
 <p id="tool-titre"><a href="AlcoholAcidity.html"> Alcohol and acidity </a></p>
 <form>
-  <label><input type="checkbox" name="quality" value="Bad" checked><font color="#fc8d59">Bad wine</font></label>
-  <label><input type="checkbox" name="quality" value="Good" checked><font color="#91cf60">Good wine</font></label>
-  <label><input type="checkbox" name="quality" value="Mediocre" checked><font color="#E6E2AF">Common wine</font></label>
+  <label><input type="checkbox" name="quality" value="Bad" checked><font color="#FC7F3C">Bad wine</font></label>
+  <label><input type="checkbox" name="quality" value="Good" checked><font color="#8FCF3C">Good wine</font></label>
+  <label><input type="checkbox" name="quality" value="Common"><font color="#B4AF91">Common wine</font></label>
 </form>
 <script>
 var w = 500;
@@ -38,17 +38,8 @@ data[0]={}; data[1]={}; data[2]={};
 obj={};
 data[4]=[];
 
-for(var i=0; i<4; i++) {
+for(var i=0; i<3; i++) {
   data[4][i] =[] // Ce qu'on veut afficher
-}
-
-var rowMax = [];
-var rowMin = [];
-var max = [];
-var min = [];
-for (var it=1; it<6; it++){
-  max[it] = 0;
-  min[it] = 10000000000;
 }
 
 d3.csv("data/wine_white.csv", function(data1) {
@@ -56,61 +47,32 @@ d3.csv("data/wine_white.csv", function(data1) {
             var v1 = d.quality,
                 v2 = d.alcohol,
                 v3 = d.fixedacidity;
-
-            if (d.quality<5) {
-              obj.color = "#fc8d59";
+            if (v1==5 || v1==6){
+              obj.color = "#E6E2AF";
               obj.quality = v1;
               obj.alcohol = v2;
               obj.fixedacidity = v3;
               data[4][0].push(obj);
               obj={};
             }
-            if (v1>6) {
-              obj.color = "#91cf60";
+
+            if (d.quality<5) {
+              obj.color = "#FC7F3C";
               obj.quality = v1;
               obj.alcohol = v2;
               obj.fixedacidity = v3;
               data[4][1].push(obj);
               obj={};
             }
-            if (v1==5 || v1==6){
-              obj.color = "#E6E2AF";
+            if (v1>6) {
+              obj.color = "#8FCF3C";
               obj.quality = v1;
               obj.alcohol = v2;
               obj.fixedacidity = v3;
               data[4][2].push(obj);
               obj={};
             }
-            /*if (v1==6){
-              obj.color = "#DBA901";
-              obj.quality = v1;
-              obj.alcohol = v2;
-              obj.fixedacidity = v3;
-              data[4][3].push(obj);
-              obj={};
-            }*/
 
-            rowMax[1] = v1;
-            rowMin[1] = v1;
-            rowMax[2] = v2;
-            rowMin[2] = v2;
-            //rowMax[3] = v3;
-            //rowMin[3] = v3;
-
-            for (var iter=1; iter<3; iter++){
-              if (rowMax[iter] > max[iter]) {
-                //console.log(rowMax[iter] + " " + max[iter]);
-                max[iter] = rowMax[iter];
-                //console.log(max[iter]);
-              }
-              if (rowMin[iter] < min[iter]) {
-                             //   console.log(iter + " " + rowMin[iter] + " " + min[iter]);
-
-                min[iter] = rowMin[iter];
-                             //   console.log(min[iter]);etonant je ne sais pas ce que fait le if mais ça bug
-
-              }
-            }
         });
         var xScale = d3.scale.linear()
                      .domain([6, 15])//remettre min et max
@@ -151,51 +113,48 @@ d3.csv("data/wine_white.csv", function(data1) {
         .style("text-anchor", "middle")
         .text("Acidity");
 
-//show or not bad wine
-        var circles = svg.selectAll("circle")
+//show or not Common wine
+       var circles = svg.selectAll("ellipse")
            .data(data[4][0])
            .enter()
-           .append("circle");
+           .append("ellipse");
 
         circles.attr("cx", function(d) {
-          //console.log(d.alcohol);
-
-               return xScale(d.alcohol); //d.quality*50
+                       return xScale(d.alcohol); //d.quality*50
             })
           .attr("cy", function(d) {
                return yScale(d.fixedacidity); //d.density*15000-14800
             })
-          .attr("r", 4)
+          .attr("rx", 4)
+          .attr("ry", 4)
           .attr("fill", function(d) { return d.color; })
-          .attr("stroke", "#0431B4")
+          .attr("stroke", "#002F2F")
           .attr("stroke-width", function(d) {
               return d/3;
             })
-          .style("opacity",1);
+          .style("opacity",0);
 
-//show or not Good wine
+//show or not Bad wine
         var circles2 = svg.selectAll("circle")
            .data(data[4][1])
            .enter()
            .append("circle");
 
         circles2.attr("cx", function(d) {
-          //console.log(d.alcohol);
-
                return xScale(d.alcohol); //d.quality*50
             })
           .attr("cy", function(d) {
                return yScale(d.fixedacidity); //d.density*15000-14800
             })
-          .attr("r", 4)
+          .attr("r",4)
           .attr("fill", function(d) { return d.color; })
-          .attr("stroke", "#0431B4")
+          .attr("stroke", "#002F2F")
           .attr("stroke-width", function(d) {
               return d/3;
             })
           .style("opacity",1);
 
-//show or not Mediocre wine
+//show or not Good wine
         var circles3 = svg.selectAll("circle")
            .data(data[4][2])
            .enter()
@@ -207,84 +166,63 @@ d3.csv("data/wine_white.csv", function(data1) {
           .attr("cy", function(d) {
                return yScale(d.fixedacidity);
             })
-          .attr("r", 4)
+          .attr("r",4)
           .attr("fill", function(d) { return d.color; })
-          .attr("stroke", "#0431B4")
+          .attr("stroke", "#002F2F")
           .attr("stroke-width", function(d) {
               return d/3;
             })
           .style("opacity",1);
 
-//show or not OK wine
-       /* var circles4 = svg.selectAll("circle")
-           .data(data[4][3])
-           .enter()
-           .append("circle");
-
-        circles4.attr("cx", function(d) {
-               return xScale(d.alcohol);
-            })
-          .attr("cy", function(d) {
-               return yScale(d.fixedacidity);
-            })
-          .attr("r", 4)
-          .attr("fill", function(d) { return d.color; })
-          .attr("stroke", "#0431B4")
-          .attr("stroke-width", function(d) {
-              return d/3;
-            })
-          .style("opacity",0);*/
-
         d3.selectAll("input").on("change", change);
 
         var checked = [];
-        checked[1] = true; //Bad
-        checked[2] = true, //Good
-        checked[3] = true; //Med
-        //checked[4] = false; //OK
+        checked[1] = false; //Com
+        checked[2] = true, //Bad
+        checked[3] = true; //Good
+
         function change() {
-            //clearTimeout(timeout);
             switch(this.value) {
-                case "Mediocre":
-                  checked[3]   = !checked[3];
-                  Mediocre();
-                    break;
-                case "Good":
-                  checked[2]   = !checked[2];
-                  Good();
+                case "Common":
+                  checked[1]   = !checked[1];
+                  Common();
                     break;
                 case "Bad":
-                  checked[1]   = !checked[1];
+                  checked[2]   = !checked[2];
                   Bad();
+                    break;
+                case "Good":
+                  checked[3]   = !checked[3];
+                  Good();
                     break;
                 default:
             }
           }
 
         function Good() {
+          if (checked[3]==true) {
+            circles3.style("opacity",1);
+          }
+          else {
+            circles3.style("opacity",0);
+          }
+        }
+
+        function Bad() {
           if (checked[2]==true) {
-            circles2.style("opacity",0.7);
+            circles2.style("opacity",0.6);
           }
           else {
             circles2.style("opacity",0);
           }
         }
 
-        function Bad() {
+        function Common() {
           if (checked[1]==true) {
-            circles.style("opacity",0.7);
+            circles.style("opacity",1);
           }
           else {
             circles.style("opacity",0);
-          }
-        }
-
-        function Mediocre() {
-          if (checked[3]==true) {
-            circles3.style("opacity",0.7);
-          }
-          else {
-            circles3.style("opacity",0);
           }
         }
 
