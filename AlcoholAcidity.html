@@ -12,7 +12,7 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="script.js"></script>
 <script src="box.js"></script>
-<h2> What make a good wine ? </h2>
+<h2> What makes a good wine ? </h2>
 <ul class="nav nav-tabs">
     <li role="presentation" class="active"><a href="TestD3.html">White wine</a></li>
     <li role="presentation"><a href="#">Red wine</a></li>
@@ -24,8 +24,8 @@
 <p id="tool-titre"><a href="AlcoholAcidity.html"> Alcohol and acidity </a></p>
 <form>
   <label><input type="checkbox" name="quality" value="Bad" checked><font color="#FC7F3C">Bad wine</font></label>
-  <label><input type="checkbox" name="quality" value="Good" checked><font color="#8FCF3C">Good wine</font></label>
   <label><input type="checkbox" name="quality" value="Common"><font color="#B4AF91">Common wine</font></label>
+  <label><input type="checkbox" name="quality" value="Good" checked><font color="#8FCF3C">Good wine</font></label>
 </form>
 <script>
 var w = 500;
@@ -113,6 +113,11 @@ d3.csv("data/wine_white.csv", function(data1) {
         .style("text-anchor", "middle")
         .text("Acidity");
 
+        var checked = [];
+        checked[1] = false; //Com
+        checked[2] = true, //Bad
+        checked[3] = true; //Good
+
 //show or not Common wine
        var circles = svg.selectAll("ellipse")
            .data(data[4][0])
@@ -130,8 +135,25 @@ d3.csv("data/wine_white.csv", function(data1) {
           .attr("fill", function(d) { return d.color; })
           .attr("stroke", "#002F2F")
           .attr("stroke-width", function(d) {
-              return d/3;
+              return 0.5;
             })
+          .on("mouseover",function(d){
+            if (checked[1]==true){
+              circles.attr("rx", 5);
+              circles.attr("ry", 5);
+              circles2.style("opacity",0);
+              circles3.style("opacity",0);
+            }
+          })
+          .on("mouseout",function(d){
+            circles.attr("r", 4);
+            if (checked[2]==true){
+              circles2.style("opacity",1);
+            }
+            if (checked[3]==true){
+              circles3.style("opacity",1);
+            }
+          })
           .style("opacity",0);
 
 //show or not Bad wine
@@ -150,8 +172,25 @@ d3.csv("data/wine_white.csv", function(data1) {
           .attr("fill", function(d) { return d.color; })
           .attr("stroke", "#002F2F")
           .attr("stroke-width", function(d) {
-              return d/3;
+              return 0.5;
             })
+          .on("mouseover",function(d){
+            if (checked[2]==true){
+              circles2.attr("r", 5);
+              circles3.style("opacity",0);
+              circles.style("opacity",0);
+            }
+          })
+          .on("mouseout",function(d){
+            //d3.select(this).style("opacity",1);
+            circles2.attr("r", 4);
+            if (checked[3]==true){
+              circles3.style("opacity",1);
+            }
+            if (checked[1]==true){
+              circles.style("opacity",1);
+            }
+          })
           .style("opacity",1);
 
 //show or not Good wine
@@ -170,16 +209,28 @@ d3.csv("data/wine_white.csv", function(data1) {
           .attr("fill", function(d) { return d.color; })
           .attr("stroke", "#002F2F")
           .attr("stroke-width", function(d) {
-              return d/3;
+              return 0.5;
             })
+          .on("mouseover",function(d){
+            if (checked[3]==true){
+              circles3.attr("r", 5);
+              circles2.style("opacity",0);
+              circles.style("opacity",0); 
+            }
+          })
+          .on("mouseout",function(d){
+            circles3.attr("r", 4);
+            if (checked[2]==true){
+              circles2.style("opacity",1);
+            }
+            if (checked[1]==true){
+              circles.style("opacity",1);
+            }
+          })
+
           .style("opacity",1);
 
         d3.selectAll("input").on("change", change);
-
-        var checked = [];
-        checked[1] = false; //Com
-        checked[2] = true, //Bad
-        checked[3] = true; //Good
 
         function change() {
             switch(this.value) {
@@ -201,7 +252,7 @@ d3.csv("data/wine_white.csv", function(data1) {
 
         function Good() {
           if (checked[3]==true) {
-            circles3.style("opacity",1);
+            circles3.style("opacity",0.7);
           }
           else {
             circles3.style("opacity",0);
@@ -210,7 +261,7 @@ d3.csv("data/wine_white.csv", function(data1) {
 
         function Bad() {
           if (checked[2]==true) {
-            circles2.style("opacity",0.6);
+            circles2.style("opacity",1);
           }
           else {
             circles2.style("opacity",0);
