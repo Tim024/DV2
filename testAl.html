@@ -43,90 +43,34 @@ for(var i=0; i<3; i++) {
   data[4][i] =[] // Ce qu'on veut afficher
 }
 
-var min=[];
-var max = [];
-for(var i=0; i<2; i++) {
-  min[i] =100000;
-  max[i]=0;
-}
 d3.csv("data/test.csv", function(data1) {
         data1.forEach(function(d) {
             var v1 = d.quality,
                 v2 = d.alcohol,
                 v3 = d.fixedacidity;
             if (v1==5 || v1==6){
-              console.log("je ne devrais pas etre init" + min[0]);
               obj.color = "#E6E2AF";
               obj.quality = v1;
               obj.alcohol = v2;
               obj.fixedacidity = v3;
               data[4][0].push(obj);
-              if (obj.alcohol > max[0]){
-                max[0]=obj.alcohol;
-              }
-              if (obj.alcohol < min[0]){
-                min[0]=obj.alcohol;
-              }
-              if(obj.fixedacidity> max[1]){
-                max[1]=obj.fixedacidity;
-              }
-              if(obj.fixedacidity< min[1]){
-                min[1]=obj.fixedacidity;
-              }
               obj={};
-              //console.log(min[0] + " " + max[0] + " " + min[1] + " " + max[1]);
             }
 
             if (d.quality<5) {
-              console.log("je suis en dern" + min[0]);
-
               obj.color = "#FC7F3C";
               obj.quality = v1;
               obj.alcohol = v2;
               obj.fixedacidity = v3;
               data[4][1].push(obj);
-              console.log(obj.alcohol + " " + min[0]);
-              console.log(obj.alcohol + " " + max[0]);
-              if (obj.alcohol > max[0]){
-              console.log(obj.alcohol + " " + max[0]);
-                              max[0]=obj.alcohol;
-                console.log("imp");
-              }
-              if (obj.alcohol < min[0]){
-                console.log("oui");
-                min[0]=obj.alcohol;
-              }
-              if(obj.fixedacidity> max[1]){
-                max[1]=obj.fixedacidity;
-              }
-              if(obj.fixedacidity< min[1]){
-                min[1]=obj.fixedacidity;
-              }
-       
-                            //console.log(min[0] + " " + max[0] + " " + min[1] + " " + max[1]);
-
               obj={};
             }
             if (v1>6) {
-              console.log("je suis sup a 6" + min[0]);
-
               obj.color = "#8FCF3C";
               obj.quality = v1;
               obj.alcohol = v2;
               obj.fixedacidity = v3;
               data[4][2].push(obj);
-              if (obj.alcohol > max[0]){
-                max[0]=obj.alcohol;
-              }
-              if (obj.alcohol < min[0]){
-                min[0]=obj.alcohol;
-              }
-              if(obj.fixedacidity> max[1]){
-                max[1]=obj.fixedacidity;
-              }
-              if(obj.fixedacidity< min[1]){
-                min[1]=obj.fixedacidity;
-              }
               obj={};
             }
 
