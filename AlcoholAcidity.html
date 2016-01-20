@@ -43,7 +43,7 @@ for(var i=0; i<3; i++) {
   data[4][i] =[] // Ce qu'on veut afficher
 }
 
-d3.csv("data/test.csv", function(data1) {
+d3.csv("data/wine_white.csv", function(data1) {
         data1.forEach(function(d) {
             var v1 = d.quality,
                 v2 = d.alcohol,
@@ -76,10 +76,10 @@ d3.csv("data/test.csv", function(data1) {
 
         });
         var xScale = d3.scale.linear()
-                     .domain([8.9, 12.8])//remettre min et max 6 15
+                     .domain([6, 15])//remettre min et max 6 15
                      .range([0, w]);
         var yScale = d3.scale.linear()
-                     .domain([5.8, 7])//13.5 2.5
+                     .domain([13.5, 2.5])//13.5 2.5
                      .range([0, h]);
 
         var svg = d3.select("div").append("svg");
@@ -118,7 +118,7 @@ d3.csv("data/test.csv", function(data1) {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d) {
-              return "<strong>Acidity:</strong> <span style='color:red'>" + d.fixedacidity + "</span> <BR> <strong>Alcohol:</strong> <span style='color:red'>" + d.alcohol + "</span>" ;
+              return "<strong>Acidity:</strong> <span style='color:"+d.color+"'>" + d.fixedacidity + "</span> <BR> <strong>Alcohol:</strong> <span style='color:"+d.color+"'>" + d.alcohol + "</span>" ;
             })
 
         svg.call(tip);
@@ -129,19 +129,19 @@ d3.csv("data/test.csv", function(data1) {
         checked[3] = true; //Good
 
 //show or not Common wine
-       var circles = svg.selectAll("ellipse")
+       var circles = svg.selectAll("rect")
            .data(data[4][0])
            .enter()
-           .append("ellipse");
+           .append("rect");
 
-        circles.attr("cx", function(d) {
+        circles.attr("x", function(d) {
                        return xScale(d.alcohol); //d.quality*50
             })
-          .attr("cy", function(d) {
+          .attr("y", function(d) {
                return yScale(d.fixedacidity); //d.density*15000-14800
             })
-          .attr("rx", 4)
-          .attr("ry", 4)
+          .attr("width", 8)
+          .attr("height", 8)
           .attr("fill", function(d) { return d.color; })
           .attr("stroke", "#002F2F")
           .attr("stroke-width", function(d) {
@@ -164,9 +164,59 @@ d3.csv("data/test.csv", function(data1) {
               circles3.style("opacity",1);
             }
           })*/
-          .on('mouseover', tip.show)
-          .on('mouseout', tip.hide)
           .style("opacity",0);
+        if(checked[1]==true){
+          circles.on('mouseover', tip.show)
+          .on('mouseout', tip.hide);
+        }
+
+//show or not Good wine
+        var circles3 = svg.selectAll("ellipse")
+           .data(data[4][2])
+           .enter()
+           .append("ellipse");
+
+        circles3.attr("cx", function(d) {
+               return xScale(d.alcohol);
+            })
+          .attr("cy", function(d) {
+               return yScale(d.fixedacidity);
+            })
+          .attr("rx",4)
+          .attr("ry",4)
+          .attr("fill", function(d) { return d.color; })
+          .attr("stroke", "#002F2F")
+          .attr("stroke-width", function(d) {
+              return 0.5;
+            })
+          /*.on("mouseover",function(d){
+            if (checked[3]==true){
+              circles3.attr("r", 5);
+              circles2.style("opacity",0);
+              circles.style("opacity",0); 
+            }
+          })
+          .on("mouseout",function(d){
+            circles3.attr("r", 4);
+            if (checked[2]==true){
+              circles2.style("opacity",1);
+            }
+            if (checked[1]==true){
+              circles.style("opacity",1);
+            }
+          })
+          .on("click", function(d){
+            if (checked[3]==true){
+              circles3.attr("r", 5);
+              circles2.style("opacity",0);
+              circles.style("opacity",0); 
+            }
+          })*/
+          .style("opacity",1);
+        if(checked[3]==true){
+          circles3.on('mouseover', tip.show)
+          .on('mouseout', tip.hide);
+        }
 
 //show or not Bad wine
         var circles2 = svg.selectAll("circle")
@@ -203,54 +253,11 @@ d3.csv("data/test.csv", function(data1) {
               circles.style("opacity",1);
             }
           })*/
-          .on('mouseover', tip.show)
-          .on('mouseout', tip.hide)
           .style("opacity",1);
-
-//show or not Good wine
-        var circles3 = svg.selectAll("circle")
-           .data(data[4][2])
-           .enter()
-           .append("circle");
-
-        circles3.attr("cx", function(d) {
-               return xScale(d.alcohol);
-            })
-          .attr("cy", function(d) {
-               return yScale(d.fixedacidity);
-            })
-          .attr("r",4)
-          .attr("fill", function(d) { return d.color; })
-          .attr("stroke", "#002F2F")
-          .attr("stroke-width", function(d) {
-              return 0.5;
-            })
-          /*.on("mouseover",function(d){
-            if (checked[3]==true){
-              circles3.attr("r", 5);
-              circles2.style("opacity",0);
-              circles.style("opacity",0); 
-            }
-          })
-          .on("mouseout",function(d){
-            circles3.attr("r", 4);
-            if (checked[2]==true){
-              circles2.style("opacity",1);
-            }
-            if (checked[1]==true){
-              circles.style("opacity",1);
-            }
-          })
-          .on("click", function(d){
-            if (checked[3]==true){
-              circles3.attr("r", 5);
-              circles2.style("opacity",0);
-              circles.style("opacity",0); 
-            }
-          })*/
-          .on('mouseover', tip.show)
-          .on('mouseout', tip.hide)
-          .style("opacity",1);
+        if(checked[2]==true){
+          circles2.on('mouseover', tip.show)
+          .on('mouseout', tip.hide);
+        }
 
         d3.selectAll("input").on("change", change);
 
@@ -274,28 +281,35 @@ d3.csv("data/test.csv", function(data1) {
 
         function Good() {
           if (checked[3]==true) {
-            circles3.style("opacity",0.7);
+            circles3.style("opacity",1);
+            circles3.on('mouseover', tip.show);
           }
           else {
             circles3.style("opacity",0);
+            circles3.on('mouseover', tip.hide);
+
           }
         }
 
         function Bad() {
           if (checked[2]==true) {
             circles2.style("opacity",1);
+            circles2.on('mouseover', tip.show);
           }
           else {
             circles2.style("opacity",0);
+            circles2.on('mouseover', tip.hide);
           }
         }
 
         function Common() {
           if (checked[1]==true) {
             circles.style("opacity",1);
+            circles.on('mouseover', tip.show);
           }
           else {
             circles.style("opacity",0);
+            circles.on('mouseover', tip.hide);
           }
         }
 
