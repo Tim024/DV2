@@ -12,6 +12,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="script.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <script src="box.js"></script>
 <h2> What makes a good wine ? </h2>
 <ul class="nav nav-tabs">
@@ -26,11 +27,11 @@
   <label><input type="radio" name="mode" value="volatileacidity"> <span>Volatile acidity</span></label>
   <label><input type="radio" name="mode" value="citricacid"> <span>Citric acid</span></label>
   <label><input type="radio" name="mode" value="alcohol" checked> <span>Alcohol</span></label>
-  <label><input type="radio" name="mode" value="fixedacidity"><span> Fixed acidity</span></label>
+  <label><input type="radio" name="mode" value="sulphates"><span> Sulphates</span></label>
 </form>
 <p id="tool-titre"><a href="AlcoholAcidity.html"> Alcohol and acidity </a></p>
 </div></div>
-<div id="content"> <strong>On remarque que pour telle propriété en fonction de la qualité on a un pic à tant de unité et une moyenne de blabla, on en deduit que plus un vin blanc est telle caracteristique meilleurs il est.On remarque que pour telle propriété en fonction de la qualité on a un pic à tant de unité et une moyenne de blabla, on en deduit que plus un vin blanc est telle caracteristique meilleurs il est</strong></div>
+<div id="content"> <strong>The concentration of alcohol is clearly correlated with the quality of the wine. The quality of red wines increase with the concentration of alcohol.</strong></div>
 <script>
 
 var labels = true; // show the text labels beside individual boxplots?
@@ -98,7 +99,7 @@ for (var it=1; it<6; it++){
   csv.forEach(function(x) {
     var v1 = Math.floor(x.alcohol),
         v2 = Math.floor(x.quality);
-        v3 = Math.floor(x.fixedacidity);
+        v3 = Math.floor(x.sulphates*10)/10;
         v4 = Math.floor(x.volatileacidity*10)/10;//pour pas que toutes les données=0
         v5 = Math.floor(x.citricacid*10)/10;
       
@@ -143,6 +144,7 @@ for (var it=1; it<6; it++){
       
      }
 
+  var usedView=1;
 
   
   var chart = d3.box()
@@ -178,12 +180,25 @@ for (var it=1; it<6; it++){
     .scale(y)
     .orient("left");
 
+
+  var tip = d3.tip()
+      .attr('class', 'd3-tip')
+      .offset([-10, 0])
+      .html(function(d) {
+        return "<strong>Mean:</strong><span style='color:steelblue'> "+mean(d, usedView)+" </span><BR><strong>Median:</strong><span style='color:steelblue'> "+median(d, usedView)+" </span>";
+      })
+
+svg.call(tip);
+
   // draw the boxplots  
-  svg.selectAll(".box")  
+  var box= svg.selectAll(".box")  
       .data(data) //essayer de mettre invdata[1]
     .enter().append("g")
     .attr("transform", function(d) { return "translate(" +  x(d[0])  + "," + margin.top + ")"; } )
       .call(chart.width(x.rangeBand())); 
+
+  box.on('mouseover', tip.show)
+     .on('mouseout', tip.hide);
   
         
   // add a title
@@ -227,22 +242,27 @@ for (var it=1; it<6; it++){
             //clearTimeout(timeout);
             switch(this.value) {
                 case "citricacid":
+                    usedView=5;
                     transitionCitricacid();
                     textCitricacid();
                     break;
                 case "alcohol":
+                    usedView=1;
                     transitionAlcohol();
                     textAlcohol();
                     break;
                 case "volatileacidity":
+                    usedView=4;
                     transitionVolatileacidity();
                     textVolatileacidity();
                     break;
-                case "fixedacidity":
-                    transitionFixedacidity();
-                    textFixedacidity();
+                case "sulphates":
+                    usedView=3;
+                    transitionSulphates();
+                    textSulphates();
                     break;
                 default:
+                    usedView=4;
                     transitionVolatileacidity();
                     textVolatileacidity();
             }
@@ -250,19 +270,19 @@ for (var it=1; it<6; it++){
 
           /*fonction pour changer description*/
           function textCitricacid() {
-            $('#content').html('<strong>Ici placer toute description interressante, je ne sais pas quoi ajouter mais ce text doit être suffisemment long pour pouvoir appliquer des propriété CSS, ce vin doit probablement contenir tel propriété pour être excellent ou tel autre mais peu importante puisque en faite cette caractèristique est completement inutile et personne ne lira jamais ce paragraphe. Jespere.</strong>')
+            $('#content').html('<strong>A soft correlation exists between the concentration of citric acid and the quality of red wines. Higher is the concentration in citric acid better is the quality of the wine.</strong>')
           }
 
           function textAlcohol() {
-            $('#content').html('<strong>On remarque que pour telle propriété en fonction de la qualité on a un pic à tant de unité et une moyenne de blabla, on en deduit que plus un vin blanc est telle caracteristique meilleurs il est.On remarque que pour telle propriété en fonction de la qualité on a un pic à tant de unité et une moyenne de blabla, on en deduit que plus un vin blanc est telle caracteristique meilleurs il est</strong>')
+            $('#content').html('<strong>The concentration of alcohol is clearly correlated with the quality of the wine. The quality of red wines increase with the concentration of alcohol.</strong>')
           }
 
           function textVolatileacidity() {
-            $('#content').html('<strong>Blablabla blabla blablablablab lalalalla blabla blablablablab lalalallablabla blablablablab lalalallablabla blablablablab lalalallablabla blablablablab lalalallablabla blablablablab lalalallablabla blablablablab lalalallablabla blablablablab lalalallablabla blablablablab lalalallablabla blablablablab lalalallablabla blablablablab lalalalla</strong>')
+            $('#content').html('<strong>The quality of red wine is higher when the concentration of volatile acidity is lower.</strong>')
           }
 
-          function textFixedacidity() {
-            $('#content').html('<strong>Do ré mi la sol fa si do ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si ré mi la sol fa si </strong>')
+          function textSulphates() {
+            $('#content').html('<strong>Better wines seem to have a higher concentration of sulphates.</strong>')
           }
 
           /*fonction pour changer data*/
@@ -288,11 +308,14 @@ for (var it=1; it<6; it++){
             yAxis.scale(y)
                  .orient("left");  
 
-            svg.selectAll(".box")  
+            var box =svg.selectAll(".box")  
                .data(data) //essayer de mettre invdata[1]
             .enter().append("g")
             .attr("transform", function(d) { return "translate(" +  x(d[0])  + "," + margin.top + ")"; } )
               .call(chart.width(x.rangeBand()));
+
+            box.on('mouseover', tip.show)
+               .on('mouseout', tip.hide);
 
 
             svg.append("g")
@@ -342,11 +365,14 @@ for (var it=1; it<6; it++){
             yAxis.scale(y)
                  .orient("left");  
 
-            svg.selectAll(".box")  
+            var box = svg.selectAll(".box")  
                .data(data) //essayer de mettre invdata[1]
             .enter().append("g")
             .attr("transform", function(d) { return "translate(" +  x(d[0])  + "," + margin.top + ")"; } )
               .call(chart.width(x.rangeBand()));
+
+            box.on('mouseover', tip.show)
+               .on('mouseout', tip.hide);
 
 
             svg.append("g")
@@ -396,11 +422,14 @@ for (var it=1; it<6; it++){
             yAxis.scale(y)
                  .orient("left");  
 
-            svg.selectAll(".box")  
+            var box = svg.selectAll(".box")  
                .data(data) //essayer de mettre invdata[1]
             .enter().append("g")
             .attr("transform", function(d) { return "translate(" +  x(d[0])  + "," + margin.top + ")"; } )
               .call(chart.width(x.rangeBand()));
+
+            box.on('mouseover', tip.show)
+               .on('mouseout', tip.hide);
 
 
             svg.append("g")
@@ -430,7 +459,7 @@ for (var it=1; it<6; it++){
 
           }
 
-          function transitionFixedacidity() {
+          function transitionSulphates() {
             chart.whiskers(iqr(1.5))
                  .domain([min[3], max[3]])
                  .value(3)
@@ -451,11 +480,14 @@ for (var it=1; it<6; it++){
             yAxis.scale(y)
                  .orient("left");  
 
-            svg.selectAll(".box")  
+            var box = svg.selectAll(".box")  
                .data(data) //essayer de mettre invdata[1]
             .enter().append("g")
             .attr("transform", function(d) { return "translate(" +  x(d[0])  + "," + margin.top + ")"; } )
               .call(chart.width(x.rangeBand()));
+
+            box.on('mouseover', tip.show)
+               .on('mouseout', tip.hide);
 
 
             svg.append("g")
@@ -467,7 +499,7 @@ for (var it=1; it<6; it++){
               .attr("dy", ".71em")
               .style("text-anchor", "end")
               .style("font-size", "16px") 
-              .text("Fixed acidity");    
+              .text("Sulphates");    
           
           // draw x axis  
             svg.append("g")
@@ -497,6 +529,30 @@ function iqr(k) {
     while (d[--j] > q3 + iqr);
     return [i, j];
   };
+}
+
+function mean(d, usedView){
+  var somme = 0;
+for (var i=0;i<d[usedView].length;i++){
+    somme += d[usedView][i];
+  }
+  var meanResult = somme/d[usedView].length;
+  return meanResult.toFixedDown(2);
+}
+
+function median(d, usedView){
+    d[usedView].sort( function(a,b) {return a - b;} );
+    var half = Math.floor(d[usedView].length/2);
+    if(d[usedView].length % 2)
+        return d[usedView][half];
+    else
+        return (d[usedView][half-1] + d[usedView][half]) / 2.0;
+}
+
+Number.prototype.toFixedDown = function(digits) {
+  var n = this - Math.pow(10, -digits)/2;
+  n += n / Math.pow(2, 53); // added 1360765523: 17.56.toFixedDown(2) === "17.56"
+  return n.toFixed(digits);
 }
         
         

@@ -17,9 +17,7 @@ d3.box = function() {
 
   // For each small multiple…
   function box(g) {
-    console.log(g);
     g.each(function(data, i) {
-      console.log("et la");
       //d = d.map(value).sort(d3.ascending);
     //var boxIndex = data[0];
     //var boxIndex = 1;
@@ -31,7 +29,6 @@ d3.box = function() {
           n = d.length,
           min = d[0],
           max = d[n - 1];
-
       // Compute quartiles. Must return exactly 3 elements.
       var quartileData = d.quartiles = quartiles(d);
 
