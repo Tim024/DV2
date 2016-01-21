@@ -28,6 +28,13 @@
   <label><input type="checkbox" name="quality" value="Common"><font color="#B4AF91">Common wine</font></label>
   <label><input type="checkbox" name="quality" value="Good" checked><font color="#8FCF3C">Good wine</font></label>
 </form>
+</div>
+</div>
+<div id="menu">
+  <a type="button" class="btn btn-default" href="AlcoholAcidity.html"><img src="AcideAlcohol.png" width='150' height='150'></a>
+  <a type="button" class="btn btn-default" href="TestD3.html"><img src="AcideAlcohol.png" width='150' height='150'></a>
+  <a type="button" class="btn btn-default" href="TestD3.html"><img src="AcideAlcohol.png" width='150' height='150'></a>
+</div>
 <script>
 var w = 500;
 var h= 500;
@@ -83,7 +90,7 @@ d3.csv("data/wine_white.csv", function(data1) {
                      .range([0, h]);
 
         var svg = d3.select("div").append("svg");
-        svg.attr("width", 800)
+        svg.attr("width", 600)
            .attr("height", 2000);
 
         svg.append("g")
