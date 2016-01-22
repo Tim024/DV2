@@ -35,7 +35,7 @@
   <a type="button" class="btn btn-default" href="SulphatesAlcohol.html"><img src="SulphatesAlcohol.png" width='150' height='150' title='Alcohol and Sulphates'></a>
   <a type="button" class="btn btn-default" href="AcideAcide.html"><img src="AcideAcide.png" width='150' height='150' title='Acidity'></a>
 </div>
-<div id="content"> <strong>Having less acetic acid (volatile acidity) on higher concentration of alcohol seems to produce better wines.</strong></div>
+<div id="content"> <strong>High citric acid and low acetic acid (volatile acidity) seems like a good combination.</strong></div>
 <script>
 var w = 500;
 var h= 500;
@@ -54,12 +54,12 @@ for(var i=0; i<3; i++) {
 d3.csv("data/wine_white.csv", function(data1) {
         data1.forEach(function(d) {
             var v1 = d.quality,
-                v2 = d.alcohol,
+                v2 = d.citricacid,
                 v3 = d.volatileacidity;
             if (v1==5 || v1==6){
               obj.color = "#E6E2AF";
               obj.quality = v1;
-              obj.alcohol = v2;
+              obj.citricacid = v2;
               obj.volatileacidity = v3;
               data[4][0].push(obj);
               obj={};
@@ -68,7 +68,7 @@ d3.csv("data/wine_white.csv", function(data1) {
             if (d.quality<5) {
               obj.color = "#FC7F3C";
               obj.quality = v1;
-              obj.alcohol = v2;
+              obj.citricacid = v2;
               obj.volatileacidity = v3;
               data[4][1].push(obj);
               obj={};
@@ -76,7 +76,7 @@ d3.csv("data/wine_white.csv", function(data1) {
             if (v1>6) {
               obj.color = "#8FCF3C";
               obj.quality = v1;
-              obj.alcohol = v2;
+              obj.citricacid = v2;
               obj.volatileacidity = v3;
               data[4][2].push(obj);
               obj={};
@@ -84,7 +84,7 @@ d3.csv("data/wine_white.csv", function(data1) {
 
         });
         var xScale = d3.scale.linear()
-                     .domain([6, 15])//remettre min et max 6 15
+                     .domain([0, 1])//remettre min et max 6 15
                      .range([0, w]);
         var yScale = d3.scale.linear()
                      .domain([1.25, 0])//13.5 2.5
@@ -105,7 +105,7 @@ d3.csv("data/wine_white.csv", function(data1) {
            .attr("x",w/2)
            .attr("y",h + 45)
            .style("text-anchor","middle")
-           .text("Alcohol");
+           .text("Citric Acid");
 
         svg.append("g")
           .attr("class", "axis")
@@ -120,13 +120,13 @@ d3.csv("data/wine_white.csv", function(data1) {
         .attr("x",0 - (h / 2))
         .attr("dy", "1em")
         .style("text-anchor", "middle")
-        .text("Acidity");
+        .text("Volatile Acidity");
 
         var tip = d3.tip()
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d) {
-              return "<strong>Acidity:</strong> <span style='color:"+d.color+"'>" + d.volatileacidity + "</span> <BR> <strong>Alcohol:</strong> <span style='color:"+d.color+"'>" + d.alcohol + "</span>" ;
+              return "<strong>Acidity:</strong> <span style='color:"+d.color+"'>" + d.volatileacidity + "</span> <BR> <strong>Citric Acid:</strong> <span style='color:"+d.color+"'>" + d.citricacid + "</span>" ;
             })
 
         svg.call(tip);
@@ -143,7 +143,7 @@ d3.csv("data/wine_white.csv", function(data1) {
            .append("rect");
 
         circles.attr("x", function(d) {
-                       return xScale(d.alcohol); //d.quality*50
+                       return xScale(d.citricacid); //d.quality*50
             })
           .attr("y", function(d) {
                return yScale(d.volatileacidity); //d.density*15000-14800
@@ -185,7 +185,7 @@ d3.csv("data/wine_white.csv", function(data1) {
            .append("ellipse");
 
         circles3.attr("cx", function(d) {
-               return xScale(d.alcohol);
+               return xScale(d.citricacid);
             })
           .attr("cy", function(d) {
                return yScale(d.volatileacidity);
@@ -233,7 +233,7 @@ d3.csv("data/wine_white.csv", function(data1) {
            .append("circle");
 
         circles2.attr("cx", function(d) {
-               return xScale(d.alcohol); //d.quality*50
+               return xScale(d.citricacid); //d.quality*50
             })
           .attr("cy", function(d) {
                return yScale(d.volatileacidity); //d.density*15000-14800

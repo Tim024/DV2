@@ -7,6 +7,7 @@ svg {
 	padding:25px;
 	/*margin : 10px;*/
   margin-left:150px;
+  margin-top:20px;
 }
 
 .axis,
@@ -73,7 +74,8 @@ form label font {
 
 #content {
     margin:30px;
-    margin-bottom: -30px;
+    margin-top: -995px;
+    width:1000px;
 }
 
 .d3-tip {
@@ -106,7 +108,7 @@ form label font {
 }
 
 #menu {
-  margin-top:-2000px;
+  margin-top:-1000px;
   float:right;
   width:200px;
 }
