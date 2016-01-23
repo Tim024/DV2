@@ -15,14 +15,14 @@
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <h2> What makes a good wine ? </h2>
 <ul class="nav nav-tabs">
-    <li role="presentation" class="active"><a href="TestD3.html">White wine</a></li>
-    <li role="presentation"><a href="RedWine.html">Red wine</a></li>
+    <li role="presentation"><a href="TestD3.html">White wine</a></li>
+    <li role="presentation" class="active"><a href="RedWine.html">Red wine</a></li>
 </ul>
 
 <div id="data">
 <div id="tool-box">
-<p id="tool-titre"><a href="TestD3.html">Chemical components and quality</a></p>
-<p id="tool-titre"><a href="AlcoholAcidity.html"> Alcohol, acidity and Sulphates</a></p>
+<p id="tool-titre"><a href="RedWine.html">Chemical components and quality</a></p>
+<p id="tool-titre"><a href="RedAlcoholAcidity.html"> Alcohol, acidity and Sulphates</a></p>
 <form>
   <label><input type="checkbox" name="quality" value="Bad" checked><font color="#FC7F3C">Bad wine</font></label>
   <label><input type="checkbox" name="quality" value="Common"><font color="#B4AF91">Common wine</font></label>
@@ -31,9 +31,9 @@
 </div>
 </div>
 <div id="menu">
-  <a type="button" class="btn btn-default" href="AlcoholAcidity.html"><img src="AcideAlcohol.png" width='150' height='150' title='Alcohol and Acidity'></a>
-  <a type="button" class="btn btn-default" href="SulphatesAlcohol.html"><img src="SulphatesAlcohol.png" width='150' height='150' title='Alcohol and Sulphates'></a>
-  <a type="button" class="btn btn-default" href="AcideAcide.html"><img src="AcideAcide.png" width='150' height='150' title='Acidity'></a>
+  <a type="button" class="btn btn-default" href="RedAlcoholAcidity.html"><img src="RedAlAc.png" width='150' height='150' title='Alcohol and Acidity'></a>
+  <a type="button" class="btn btn-default" href="RedSulphatesAlcohol.html"><img src="RedSuAl.png" width='150' height='150' title='Alcohol and Sulphates'></a>
+  <a type="button" class="btn btn-default" href="RedAcideAcide.html"><img src="RedAcAc.png" width='150' height='150' title='Acidity'></a>
 </div>
 <div id="content"> <strong>It seems that for wines with high alcohol content, having a higher concentration of sulphates produces better wines.</strong></div>
 <script>
@@ -51,7 +51,7 @@ for(var i=0; i<3; i++) {
   data[4][i] =[] // Ce qu'on veut afficher
 }
 
-d3.csv("data/wine_white.csv", function(data1) {
+d3.csv("data/wine_red.csv", function(data1) {
         data1.forEach(function(d) {
             var v1 = d.quality,
                 v2 = d.alcohol,

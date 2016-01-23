@@ -16,20 +16,20 @@
 <script src="box.js"></script>
 <h2> What makes a good wine ? </h2>
 <ul class="nav nav-tabs">
-    <li role="presentation" class="active"><a href="TestD3.html">White wine</a></li>
-    <li role="presentation"><a href="RedWine.html">Red wine</a></li>
+    <li role="presentation"><a href="TestD3.html">White wine</a></li>
+    <li role="presentation" class="active"><a href="RedWine.html">Red wine</a></li>
 </ul>
 
 <div id="data">
 <div id="tool-box">
-<p id="tool-titre"><a href="TestD3.html">Chemical components and quality</a></p>
+<p id="tool-titre"><a href="RedWine.html">Chemical components and quality</a></p>
 <form>
   <label><input type="radio" name="mode" value="volatileacidity"> <span>Volatile acidity</span></label>
   <label><input type="radio" name="mode" value="citricacid"> <span>Citric acid</span></label>
   <label><input type="radio" name="mode" value="alcohol" checked> <span>Alcohol</span></label>
   <label><input type="radio" name="mode" value="sulphates"><span> Sulphates</span></label>
 </form>
-<p id="tool-titre"><a href="AlcoholAcidity.html"> Alcohol, acidity and Sulphates</a></p>
+<p id="tool-titre"><a href="RedAlcoholAcidity.html"> Alcohol, acidity and Sulphates</a></p>
 </div></div>
 <div id="content"> <strong>The concentration of alcohol is clearly correlated with the quality of the wine. The quality of red wines increase with the concentration of alcohol.</strong></div>
 <script>
@@ -44,7 +44,7 @@ var min = Infinity,
     max = -Infinity;
   
 // parse in the data  
-d3.csv("data/wine_white.csv", function(error, csv) {
+d3.csv("data/wine_red.csv", function(error, csv) {
   // using an array of arrays with
   // data[n][2] 
   // where n = number of columns in the csv file 

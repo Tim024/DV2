@@ -15,14 +15,14 @@
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <h2> What makes a good wine ? </h2>
 <ul class="nav nav-tabs">
-    <li role="presentation" class="active"><a href="TestD3.html">White wine</a></li>
-    <li role="presentation"><a href="RedWine.html">Red wine</a></li>
+    <li role="presentation"><a href="TestD3.html">White wine</a></li>
+    <li role="presentation" class="active"><a href="RedWine.html">Red wine</a></li>
 </ul>
 
 <div id="data">
 <div id="tool-box">
-<p id="tool-titre"><a href="TestD3.html">Chemical components and quality</a></p>
-<p id="tool-titre"><a href="AlcoholAcidity.html"> Alcohol, acidity and Sulphates</a></p>
+<p id="tool-titre"><a href="RedWine.html">Chemical components and quality</a></p>
+<p id="tool-titre"><a href="RedAlcoholAcidity.html"> Alcohol, acidity and Sulphates</a></p>
 <form>
   <label><input type="checkbox" name="quality" value="Bad" checked><font color="#FC7F3C">Bad wine</font></label>
   <label><input type="checkbox" name="quality" value="Common"><font color="#B4AF91">Common wine</font></label>
@@ -31,11 +31,11 @@
 </div>
 </div>
 <div id="menu">
-  <a type="button" class="btn btn-default" href="AlcoholAcidity.html"><img src="AcideAlcohol.png" width='150' height='150' title='Alcohol and Acidity'></a>
-  <a type="button" class="btn btn-default" href="SulphatesAlcohol.html"><img src="SulphatesAlcohol.png" width='150' height='150' title='Alcohol and Sulphates'></a>
-  <a type="button" class="btn btn-default" href="AcideAcide.html"><img src="AcideAcide.png" width='150' height='150' title='Acidity'></a>
+  <a type="button" class="btn btn-default" href="RedAlcoholAcidity.html"><img src="RedAlAc.png" width='150' height='150' title='Alcohol and Acidity'></a>
+  <a type="button" class="btn btn-default" href="RedSulphatesAlcohol.html"><img src="RedSuAl.png" width='150' height='150' title='Alcohol and Sulphates'></a>
+  <a type="button" class="btn btn-default" href="RedAcideAcide.html"><img src="RedAcAc.png" width='150' height='150' title='Acidity'></a>
 </div>
-<div id="content"> <strong>It seems that for wines with high alcohol content, having a higher concentration of sulphates produces better wines.</strong></div>
+<div id="content"> <strong>High citric acid and low acetic acid (volatile acidity) seems like a good combination.</strong></div>
 <script>
 var w = 500;
 var h= 500;
@@ -51,16 +51,16 @@ for(var i=0; i<3; i++) {
   data[4][i] =[] // Ce qu'on veut afficher
 }
 
-d3.csv("data/wine_white.csv", function(data1) {
+d3.csv("data/wine_red.csv", function(data1) {
         data1.forEach(function(d) {
             var v1 = d.quality,
-                v2 = d.alcohol,
-                v3 = d.sulphates;
+                v2 = d.citricacid,
+                v3 = d.volatileacidity;
             if (v1==5 || v1==6){
               obj.color = "#E6E2AF";
               obj.quality = v1;
-              obj.alcohol = v2;
-              obj.sulphates = v3;
+              obj.citricacid = v2;
+              obj.volatileacidity = v3;
               data[4][0].push(obj);
               obj={};
             }
@@ -68,23 +68,23 @@ d3.csv("data/wine_white.csv", function(data1) {
             if (d.quality<5) {
               obj.color = "#FC7F3C";
               obj.quality = v1;
-              obj.alcohol = v2;
-              obj.sulphates = v3;
+              obj.citricacid = v2;
+              obj.volatileacidity = v3;
               data[4][1].push(obj);
               obj={};
             }
             if (v1>6) {
               obj.color = "#8FCF3C";
               obj.quality = v1;
-              obj.alcohol = v2;
-              obj.sulphates = v3;
+              obj.citricacid = v2;
+              obj.volatileacidity = v3;
               data[4][2].push(obj);
               obj={};
             }
 
         });
         var xScale = d3.scale.linear()
-                     .domain([6, 15])//remettre min et max 6 15
+                     .domain([0, 1])//remettre min et max 6 15
                      .range([0, w]);
         var yScale = d3.scale.linear()
                      .domain([1.25, 0])//13.5 2.5
@@ -105,7 +105,7 @@ d3.csv("data/wine_white.csv", function(data1) {
            .attr("x",w/2)
            .attr("y",h + 45)
            .style("text-anchor","middle")
-           .text("Alcohol");
+           .text("Citric Acid");
 
         svg.append("g")
           .attr("class", "axis")
@@ -120,13 +120,13 @@ d3.csv("data/wine_white.csv", function(data1) {
         .attr("x",0 - (h / 2))
         .attr("dy", "1em")
         .style("text-anchor", "middle")
-        .text("Sulphates");
+        .text("Volatile Acidity");
 
         var tip = d3.tip()
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d) {
-              return "<strong>Sulphates:</strong> <span style='color:"+d.color+"'>" + d.sulphates + "</span> <BR> <strong>Alcohol:</strong> <span style='color:"+d.color+"'>" + d.alcohol + "</span>" ;
+              return "<strong>Acidity:</strong> <span style='color:"+d.color+"'>" + d.volatileacidity + "</span> <BR> <strong>Citric Acid:</strong> <span style='color:"+d.color+"'>" + d.citricacid + "</span>" ;
             })
 
         svg.call(tip);
@@ -143,10 +143,10 @@ d3.csv("data/wine_white.csv", function(data1) {
            .append("rect");
 
         circles.attr("x", function(d) {
-                       return xScale(d.alcohol); //d.quality*50
+                       return xScale(d.citricacid); //d.quality*50
             })
           .attr("y", function(d) {
-               return yScale(d.sulphates); //d.density*15000-14800
+               return yScale(d.volatileacidity); //d.density*15000-14800
             })
           .attr("width", 8)
           .attr("height", 8)
@@ -185,10 +185,10 @@ d3.csv("data/wine_white.csv", function(data1) {
            .append("ellipse");
 
         circles3.attr("cx", function(d) {
-               return xScale(d.alcohol);
+               return xScale(d.citricacid);
             })
           .attr("cy", function(d) {
-               return yScale(d.sulphates);
+               return yScale(d.volatileacidity);
             })
           .attr("rx",4)
           .attr("ry",4)
@@ -233,10 +233,10 @@ d3.csv("data/wine_white.csv", function(data1) {
            .append("circle");
 
         circles2.attr("cx", function(d) {
-               return xScale(d.alcohol); //d.quality*50
+               return xScale(d.citricacid); //d.quality*50
             })
           .attr("cy", function(d) {
-               return yScale(d.sulphates); //d.density*15000-14800
+               return yScale(d.volatileacidity); //d.density*15000-14800
             })
           .attr("r",4)
           .attr("fill", function(d) { return d.color; })
