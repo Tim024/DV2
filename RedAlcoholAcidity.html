@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="bootstrap-3.3.5-dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="style3.css" />
+        <title>Wine quality</title>
+    </head>
+<body>
+<script src="d3/d3.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="script.js"></script>
+<script src="box.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<h2> What makes a good wine ? </h2>
+<ul class="nav nav-tabs">
+    <li role="presentation"><a href="TestD3.html">White wine</a></li>
+    <li role="presentation" class="active"><a href="RedWine.html">Red wine</a></li>
+</ul>
+
+<div id="data">
+<div id="tool-box">
+<p id="tool-titre"><a href="RedWine.html">Chemical components and quality</a></p>
+<p id="tool-titre"><a href="RedAlcoholAcidity.html"> Alcohol, acidity and Sulphates</a></p>
+<form>
+  <label><input type="checkbox" name="quality" value="Bad" checked><font color="#FC7F3C">Bad wine</font></label>
+  <label><input type="checkbox" name="quality" value="Common"><font color="#B4AF91">Common wine</font></label>
+  <label><input type="checkbox" name="quality" value="Good" checked><font color="#8FCF3C">Good wine</font></label>
+</form>
+</div>
+</div>
+<div id="menu">
+  <a type="button" class="btn btn-default" href="RedAlcoholAcidity.html"><img src="RedAlAc.png" width='150' height='150' title='Alcohol and Acidity'></a>
+  <a type="button" class="btn btn-default" href="RedSulphatesAlcohol.html"><img src="RedSuAl.png" width='150' height='150' title='Alcohol and Sulphates'></a>
+  <a type="button" class="btn btn-default" href="RedAcideAcide.html"><img src="RedAcAc.png" width='150' height='150' title='Acidity'></a>
+</div>
+<div id="content"> <strong>Having less acetic acid (volatile acidity) on higher concentration of alcohol seems to produce better wines.</strong></div>
+<script>
+var w = 500;
+var h= 500;
+
+var data= []; 
+/*creer un tableau par couleur qui correspond à une categorie de qualité de vin*/ 
+data[0]={}; data[1]={}; data[2]={}; 
+/*data[3]={};*/
+obj={};
+data[4]=[];
+
+for(var i=0; i<3; i++) {
+  data[4][i] =[] // Ce qu'on veut afficher
+}
+
+d3.csv("data/wine_red.csv", function(data1) {
+        data1.forEach(function(d) {
+            var v1 = d.quality,
+                v2 = d.alcohol,
+                v3 = d.volatileacidity;
+            if (v1==5 || v1==6){
+              obj.color = "#E6E2AF";
+              obj.quality = v1;
+              obj.alcohol = v2;
+              obj.volatileacidity = v3;
+              data[4][0].push(obj);
+              obj={};
+            }
+
+            if (d.quality<5) {
+              obj.color = "#FC7F3C";
+              obj.quality = v1;
+              obj.alcohol = v2;
+              obj.volatileacidity = v3;
+              data[4][1].push(obj);
+              obj={};
+            }
+            if (v1>6) {
+              obj.color = "#8FCF3C";
+              obj.quality = v1;
+              obj.alcohol = v2;
+              obj.volatileacidity = v3;
+              data[4][2].push(obj);
+              obj={};
+            }
+
+        });
+        var xScale = d3.scale.linear()
+                     .domain([6, 15])//remettre min et max 6 15
+                     .range([0, w]);
+        var yScale = d3.scale.linear()
+                     .domain([1.25, 0])//13.5 2.5
+                     .range([0, h]);
+
+        var svg = d3.select("div").append("svg");
+        svg.attr("width", 600)
+           .attr("height", 1000);
+
+        svg.append("g")
+          .attr("class", "axis")
+          .attr("transform", "translate(" + 30 + "," + (h) + ")")
+          .call(d3.svg.axis()
+                      .scale(xScale)
+                      .orient("bottom"));
+
+        svg.append("text")
+           .attr("x",w/2)
+           .attr("y",h + 45)
+           .style("text-anchor","middle")
+           .text("Alcohol");
+
+        svg.append("g")
+          .attr("class", "axis")
+          .attr("transform", "translate(" + 20 + ",0)")
+          .call(d3.svg.axis()
+                      .scale(yScale)
+                      .orient("left"));
+
+        svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - 28)
+        .attr("x",0 - (h / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Acidity");
+
+        var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0])
+            .html(function(d) {
+              return "<strong>Acidity:</strong> <span style='color:"+d.color+"'>" + d.volatileacidity + "</span> <BR> <strong>Alcohol:</strong> <span style='color:"+d.color+"'>" + d.alcohol + "</span>" ;
+            })
+
+        svg.call(tip);
+
+        var checked = [];
+        checked[1] = false; //Com
+        checked[2] = true, //Bad
+        checked[3] = true; //Good
+
+//show or not Common wine
+       var circles = svg.selectAll("rect")
+           .data(data[4][0])
+           .enter()
+           .append("rect");
+
+        circles.attr("x", function(d) {
+                       return xScale(d.alcohol); //d.quality*50
+            })
+          .attr("y", function(d) {
+               return yScale(d.volatileacidity); //d.density*15000-14800
+            })
+          .attr("width", 8)
+          .attr("height", 8)
+          .attr("fill", function(d) { return d.color; })
+          .attr("stroke", "#002F2F")
+          .attr("stroke-width", function(d) {
+              return 0.5;
+            })/*
+          .on("mouseover",function(d){
+            if (checked[1]==true){
+              circles.attr("rx", 5);
+              circles.attr("ry", 5);
+              circles2.style("opacity",0);
+              circles3.style("opacity",0);
+            }
+          })
+          .on("mouseout",function(d){
+            circles.attr("r", 4);
+            if (checked[2]==true){
+              circles2.style("opacity",1);
+            }
+            if (checked[3]==true){
+              circles3.style("opacity",1);
+            }
+          })*/
+          .style("opacity",0);
+        if(checked[1]==true){
+          circles.on('mouseover', tip.show)
+          .on('mouseout', tip.hide);
+        }
+
+//show or not Good wine
+        var circles3 = svg.selectAll("ellipse")
+           .data(data[4][2])
+           .enter()
+           .append("ellipse");
+
+        circles3.attr("cx", function(d) {
+               return xScale(d.alcohol);
+            })
+          .attr("cy", function(d) {
+               return yScale(d.volatileacidity);
+            })
+          .attr("rx",4)
+          .attr("ry",4)
+          .attr("fill", function(d) { return d.color; })
+          .attr("stroke", "#002F2F")
+          .attr("stroke-width", function(d) {
+              return 0.5;
+            })
+          /*.on("mouseover",function(d){
+            if (checked[3]==true){
+              circles3.attr("r", 5);
+              circles2.style("opacity",0);
+              circles.style("opacity",0); 
+            }
+          })
+          .on("mouseout",function(d){
+            circles3.attr("r", 4);
+            if (checked[2]==true){
+              circles2.style("opacity",1);
+            }
+            if (checked[1]==true){
+              circles.style("opacity",1);
+            }
+          })
+          .on("click", function(d){
+            if (checked[3]==true){
+              circles3.attr("r", 5);
+              circles2.style("opacity",0);
+              circles.style("opacity",0); 
+            }
+          })*/
+          .style("opacity",1);
+        if(checked[3]==true){
+          circles3.on('mouseover', tip.show)
+          .on('mouseout', tip.hide);
+        }
+
+//show or not Bad wine
+        var circles2 = svg.selectAll("circle")
+           .data(data[4][1])
+           .enter()
+           .append("circle");
+
+        circles2.attr("cx", function(d) {
+               return xScale(d.alcohol); //d.quality*50
+            })
+          .attr("cy", function(d) {
+               return yScale(d.volatileacidity); //d.density*15000-14800
+            })
+          .attr("r",4)
+          .attr("fill", function(d) { return d.color; })
+          .attr("stroke", "#002F2F")
+          .attr("stroke-width", function(d) {
+              return 0.5;
+            })/*
+          .on("mouseover",function(d){
+            if (checked[2]==true){
+              circles2.attr("r", 5);
+              circles3.style("opacity",0);
+              circles.style("opacity",0);
+            }
+          })
+          .on("mouseout",function(d){
+            //d3.select(this).style("opacity",1);
+            circles2.attr("r", 4);
+            if (checked[3]==true){
+              circles3.style("opacity",1);
+            }
+            if (checked[1]==true){
+              circles.style("opacity",1);
+            }
+          })*/
+          .style("opacity",1);
+        if(checked[2]==true){
+          circles2.on('mouseover', tip.show)
+          .on('mouseout', tip.hide);
+        }
+
+        d3.selectAll("input").on("change", change);
+
+        function change() {
+            switch(this.value) {
+                case "Common":
+                  checked[1]   = !checked[1];
+                  Common();
+                    break;
+                case "Bad":
+                  checked[2]   = !checked[2];
+                  Bad();
+                    break;
+                case "Good":
+                  checked[3]   = !checked[3];
+                  Good();
+                    break;
+                default:
+            }
+          }
+
+        function Good() {
+          if (checked[3]==true) {
+            circles3.style("opacity",1);
+            circles3.on('mouseover', tip.show);
+          }
+          else {
+            circles3.style("opacity",0);
+            circles3.on('mouseover', tip.hide);
+
+          }
+        }
+
+        function Bad() {
+          if (checked[2]==true) {
+            circles2.style("opacity",1);
+            circles2.on('mouseover', tip.show);
+          }
+          else {
+            circles2.style("opacity",0);
+            circles2.on('mouseover', tip.hide);
+          }
+        }
+
+        function Common() {
+          if (checked[1]==true) {
+            circles.style("opacity",1);
+            circles.on('mouseover', tip.show);
+          }
+          else {
+            circles.style("opacity",0);
+            circles.on('mouseover', tip.hide);
+          }
+        }
+
+
+
+  });
+</script>
