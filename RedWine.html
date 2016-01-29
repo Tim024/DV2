@@ -84,7 +84,7 @@ for(var i=1; i<6; i++) {
   data[5][i] = [];
   data[6][i] = [];
   data[7][i] = [];
-  data[8][i] = [];
+  data[8][i] = [0];
   data[9][i] = [0];
 }
   
@@ -142,7 +142,7 @@ for (var it=1; it<6; it++){
          invdata[j][i]=data[i][j];
       }
       
-     }
+     }console.log(data);
 
   var usedView=1;
 
@@ -270,7 +270,7 @@ svg.call(tip);
 
           /*fonction pour changer description*/
           function textCitricacid() {
-            $('#content').html('<strong>A soft correlation exists between the concentration of citric acid and the quality of red wines. Higher is the concentration in citric acid better is the quality of the wine.</strong>')
+            $('#content').html('<strong>Higher is the concentration in citric acid better is the quality of the wine.</strong>')
           }
 
           function textAlcohol() {

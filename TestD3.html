@@ -31,7 +31,7 @@
 </form>
 <p id="tool-titre"><a href="AlcoholAcidity.html"> Alcohol, acidity and Sulphates</a></p>
 </div></div>
-<div id="content"> <strong>The concentration of alcohol is clearly correlated with the quality of the wine. The quality of red wines increase with the concentration of alcohol.</strong></div>
+<div id="content"> <strong>The concentration of alcohol is clearly correlated with the quality of the wine. The quality of white wines increase with the concentration of alcohol.</strong></div>
 <script>
 
 var labels = true; // show the text labels beside individual boxplots?
@@ -270,15 +270,15 @@ svg.call(tip);
 
           /*fonction pour changer description*/
           function textCitricacid() {
-            $('#content').html('<strong>A soft correlation exists between the concentration of citric acid and the quality of red wines. Higher is the concentration in citric acid better is the quality of the wine.</strong>')
+            $('#content').html('<strong>A soft correlation exists between the concentration of citric acid and the quality of white wines. Higher is the concentration in citric acid better is the quality of the wine.</strong>')
           }
 
           function textAlcohol() {
-            $('#content').html('<strong>The concentration of alcohol is clearly correlated with the quality of the wine. The quality of red wines increase with the concentration of alcohol.</strong>')
+            $('#content').html('<strong>The concentration of alcohol is clearly correlated with the quality of the wine. The quality of white wines increase with the concentration of alcohol.</strong>')
           }
 
           function textVolatileacidity() {
-            $('#content').html('<strong>The quality of red wine is higher when the concentration of volatile acidity is lower.</strong>')
+            $('#content').html('<strong>The quality of white wines seems to be soflely correlated with the concentration of volatile acidity. However, it is noticiable than the quality of wines seems to increase a little when the concentration of volatile acidity is lower.</strong>')
           }
 
           function textSulphates() {
